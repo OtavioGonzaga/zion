@@ -423,7 +423,7 @@ test("keeps the complete schedule within common viewport widths", async ({ page 
 	await page.getByRole("button", { name: "Criar plano" }).click();
 	await page.getByRole("link", { name: "Plano" }).click();
 
-	for (const width of [360, 768, 1440]) {
+	for (const width of [320, 360, 768, 1440]) {
 		await page.setViewportSize({ width, height: 900 });
 		const dimensions = await page.evaluate(() => ({
 			viewport: document.documentElement.clientWidth,
@@ -431,7 +431,7 @@ test("keeps the complete schedule within common viewport widths", async ({ page 
 		}));
 		expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 	}
-	for (const width of [360, 768, 1440]) {
+	for (const width of [320, 360, 768, 1440]) {
 		await page.setViewportSize({ width, height: 900 });
 		for (const view of ["Concluídos", "Hoje", "Plano"]) {
 			await page.getByRole("link", { name: view }).click();
