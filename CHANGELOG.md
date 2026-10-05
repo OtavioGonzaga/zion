@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-05
+
 ### Added
 
 - Add primary navigation between Today, Plan, and completed readings, with reversible progress and immediate undo feedback.
