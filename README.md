@@ -81,9 +81,18 @@ avoid shifting the target while reading.
 
 ## GitHub Pages
 
-The `main` branch deploys after CI succeeds. In the repository's **Settings →
-Pages**, choose **GitHub Actions** as the build and deployment source if Pages
-has not been enabled yet.
+Deployments are manual through the **Deploy** workflow. It can deploy:
+
+- a published release by entering its version (for example, `0.1.0`);
+- the latest commit on `main` as a snapshot; or
+- a specific 40-character commit SHA as a snapshot.
+
+The **Create Release** workflow is also manual. It updates the package version
+and changelog on `main`, validates the resulting commit, then creates the
+annotated tag and GitHub Release. Do not create release tags manually.
+
+Before the first deployment, choose **GitHub Actions** as the source in the
+repository's **Settings → Pages**.
 
 ## Contributing
 
