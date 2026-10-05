@@ -131,14 +131,6 @@ export function parseAppState(serialized: string): StateParseResult {
 	};
 }
 
-export function migratePersistedState(value: unknown): StateParseResult {
-	try {
-		return parseAppState(JSON.stringify(value));
-	} catch {
-		return { ok: false, reason: "invalid-schema" };
-	}
-}
-
 function getBrowserStorage(): StorageLike | undefined {
 	try {
 		return typeof window === "undefined" ? undefined : window.localStorage;
@@ -150,19 +142,20 @@ function getBrowserStorage(): StorageLike | undefined {
 export type LoadStateResult = {
 	state: AppState;
 	issue: "unavailable" | "invalid-json" | "invalid-schema" | "unsupported-version" | null;
+	canPersist: boolean;
 };
 
 export function loadAppState(storage = getBrowserStorage()): LoadStateResult {
-	if (!storage) return { state: createInitialState(), issue: "unavailable" };
+	if (!storage) return { state: createInitialState(), issue: "unavailable", canPersist: false };
 	try {
 		const raw = storage.getItem(STORAGE_KEY);
-		if (raw === null) return { state: createInitialState(), issue: null };
+		if (raw === null) return { state: createInitialState(), issue: null, canPersist: true };
 		const result = parseAppState(raw);
 		return result.ok
-			? { state: result.state, issue: null }
-			: { state: createInitialState(), issue: result.reason };
+			? { state: result.state, issue: null, canPersist: true }
+			: { state: createInitialState(), issue: result.reason, canPersist: false };
 	} catch {
-		return { state: createInitialState(), issue: "unavailable" };
+		return { state: createInitialState(), issue: "unavailable", canPersist: false };
 	}
 }
 

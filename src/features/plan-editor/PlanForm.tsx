@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { ChapterReferencePicker } from "../../components/ChapterReferencePicker";
+import { getChapterRange } from "../../domain/bible/bible";
 import { getBookOptions } from "../../domain/bible/references";
 import type { ChapterRef, LocalDate } from "../../domain/bible/types";
-import type { ReadingPlan } from "../../domain/plan/types";
+import { getContiguousCompletedThrough } from "../../domain/plan/progress";
+import type { CompletedChapter, ReadingPlan } from "../../domain/plan/types";
 import { validatePlan } from "../../domain/plan/validation";
 
 interface PlanFormProps {
 	initialPlan?: ReadingPlan;
+	initialProgress?: CompletedChapter[];
 	startDate: LocalDate;
 	targetDate: LocalDate;
-	onSubmit: (plan: ReadingPlan) => void;
+	onSubmit: (plan: ReadingPlan, completedThrough?: ChapterRef) => void;
 	onCancel?: () => void;
 }
 
@@ -26,6 +30,7 @@ function partsFromReference(
 
 export function PlanForm({
 	initialPlan,
+	initialProgress = [],
 	startDate,
 	targetDate,
 	onSubmit,
@@ -40,6 +45,15 @@ export function PlanForm({
 	const [startDay, setStartDay] = useState<string>(initialPlan?.startDate ?? startDate);
 	const [targetDay, setTargetDay] = useState<string>(initialPlan?.targetDate ?? targetDate);
 	const [errors, setErrors] = useState<ReturnType<typeof validatePlan>>({});
+	const initialReadThrough = initialPlan
+		? getContiguousCompletedThrough(
+				initialPlan.startReference,
+				initialPlan.endReference,
+				initialProgress,
+			)
+		: undefined;
+	const [readThrough, setReadThrough] = useState<ChapterRef | null>(initialReadThrough ?? null);
+	const [readThroughError, setReadThroughError] = useState(false);
 
 	function submit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -51,7 +65,12 @@ export function PlanForm({
 		};
 		const validation = validatePlan(candidate);
 		setErrors(validation);
-		if (Object.keys(validation).length === 0) onSubmit(candidate);
+		const validReadThrough =
+			!readThrough ||
+			getChapterRange(candidate.startReference, candidate.endReference).includes(readThrough);
+		setReadThroughError(!validReadThrough);
+		if (Object.keys(validation).length === 0 && validReadThrough)
+			onSubmit(candidate, readThrough ?? undefined);
 	}
 
 	return (
@@ -137,6 +156,31 @@ export function PlanForm({
 						</p>
 					)}
 				</fieldset>
+			</div>
+			<div className="form-range">
+				<div>
+					<ChapterReferencePicker
+						idPrefix="read-through"
+						label="Já li até… (opcional)"
+						value={readThrough}
+						start={`${startBook}.${startChapter}` as ChapterRef}
+						end={`${endBook}.${endChapter}` as ChapterRef}
+						onChange={(reference) => {
+							setReadThrough(reference);
+							setReadThroughError(false);
+						}}
+					/>
+					<p className="muted field-hint">
+						{readThrough
+							? `${getChapterRange(`${startBook}.${startChapter}` as ChapterRef, readThrough).length} capítulos serão marcados como lidos, desde o início do plano.`
+							: "Marque automaticamente como lidos os capítulos desde o início do plano."}
+					</p>
+					{readThroughError && (
+						<p className="field-error" role="alert">
+							Escolha um capítulo entre o início e o fim do plano.
+						</p>
+					)}
+				</div>
 			</div>
 			<div className="form-range">
 				<div className="form-fieldset">

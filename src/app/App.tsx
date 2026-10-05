@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { appConfig } from "../config/app";
-import { addDays, formatLocalDate, getCurrentLocalDate, listDates } from "../domain/bible/date";
-import { formatReferenceRange, formatReferences } from "../domain/bible/references";
-import type { ChapterRef, LocalDate } from "../domain/bible/types";
+import { addDays, formatLocalDate, listDates } from "../domain/bible/date";
+import { formatReferenceRange } from "../domain/bible/references";
+import type { ChapterRef } from "../domain/bible/types";
+import {
+	markChapterComplete,
+	markChapterPending,
+	markRangePending,
+	mergeCompletedRange,
+} from "../domain/plan/progress";
 import { findAssignment, generateSchedule, getPlanProgress } from "../domain/plan/scheduler";
-import type { DailyAssignment, ReadingPlan } from "../domain/plan/types";
+import type { ReadingPlan } from "../domain/plan/types";
+import { AppHeader } from "../components/AppHeader";
+import { ScheduleList, UpcomingList } from "../features/schedule/ScheduleList";
+import { ChapterList } from "../features/today/ChapterList";
 import { PlanForm } from "../features/plan-editor/PlanForm";
 import { BackupRestoreControl } from "../features/settings/BackupRestoreControl";
 import { SettingsPanel } from "../features/settings/SettingsPanel";
 import { readingTemplate } from "../data/reading-template";
-import { loadAppState, saveAppState } from "../storage/state";
+import { saveAppState } from "../storage/state";
 import type { AppState, ThemePreference } from "../storage/state";
+import { useCurrentLocalDate } from "./useCurrentLocalDate";
 
 function applyTheme(theme: ThemePreference) {
 	document.documentElement.dataset.theme =
@@ -21,19 +31,23 @@ function applyTheme(theme: ThemePreference) {
 			: theme;
 }
 
-function describeDay(date: LocalDate, today: LocalDate) {
-	if (date === today) return "Hoje";
-	return formatLocalDate(date, { weekday: "short", day: "2-digit", month: "short" });
-}
-
-export function App() {
-	const [appState, setAppState] = useState<AppState>(() => loadAppState().state);
-	const [storageIssue, setStorageIssue] = useState(() => loadAppState().issue);
+export function App({
+	initialState,
+	initialStorageIssue,
+	canPersistInitially,
+}: {
+	initialState: AppState;
+	initialStorageIssue: string | null;
+	canPersistInitially: boolean;
+}) {
+	const [appState, setAppState] = useState<AppState>(initialState);
+	const [storageIssue, setStorageIssue] = useState(initialStorageIssue);
+	const [canPersist, setCanPersist] = useState(canPersistInitially);
 	const [editing, setEditing] = useState(false);
 	const [showSchedule, setShowSchedule] = useState(false);
 	const [showSettings, setShowSettings] = useState(false);
 	const [printRequested, setPrintRequested] = useState(false);
-	const today = getCurrentLocalDate();
+	const today = useCurrentLocalDate();
 	const defaultTargetDate = addDays(today, 364);
 	const computedSchedule = appState.plan
 		? generateSchedule({
@@ -44,12 +58,27 @@ export function App() {
 			})
 		: null;
 	const projectedToday = computedSchedule ? findAssignment(computedSchedule, today) : undefined;
+	const todayAssignment =
+		appState.dailyAssignment?.date === today ? appState.dailyAssignment : projectedToday;
+	const displayAssignments = computedSchedule?.assignments.map((assignment) =>
+		assignment.date === today && todayAssignment ? todayAssignment : assignment,
+	);
 	const summary = appState.plan ? getPlanProgress(appState.plan, appState.progress) : null;
 	const completedSet = new Set(appState.progress.map((item) => item.chapter));
 
 	useEffect(() => {
-		if (!saveAppState(appState)) setStorageIssue("unavailable");
-	}, [appState]);
+		if (canPersist && !saveAppState(appState)) setStorageIssue("unavailable");
+	}, [appState, canPersist]);
+
+	useEffect(() => {
+		if (
+			computedSchedule?.status === "active" &&
+			projectedToday &&
+			appState.dailyAssignment?.date !== today
+		) {
+			setAppState((state) => ({ ...state, dailyAssignment: projectedToday }));
+		}
+	}, [appState.dailyAssignment?.date, computedSchedule?.status, projectedToday, today]);
 
 	useEffect(() => {
 		if (appState.preferences.theme !== "system") return;
@@ -70,8 +99,24 @@ export function App() {
 		return () => cancelAnimationFrame(frame);
 	}, [printRequested, showSchedule]);
 
-	function savePlan(plan: ReadingPlan) {
-		setAppState((state) => ({ ...state, plan, progress: [], dailyAssignment: null }));
+	function savePlan(plan: ReadingPlan, completedThrough?: ChapterRef) {
+		setCanPersist(true);
+		setAppState((state) => {
+			const progress = state.plan ? state.progress : [];
+			return {
+				...state,
+				plan,
+				progress: completedThrough
+					? mergeCompletedRange(
+							progress,
+							plan.startReference,
+							completedThrough,
+							new Date().toISOString(),
+						)
+					: progress,
+				dailyAssignment: null,
+			};
+		});
 		setEditing(false);
 		setShowSchedule(false);
 	}
@@ -88,21 +133,19 @@ export function App() {
 	}
 
 	function toggleChapter(chapter: ChapterRef, checked: boolean) {
+		setCanPersist(true);
 		setAppState((state) => ({
 			...state,
 			progress: checked
-				? [
-						...state.progress.filter((item) => item.chapter !== chapter),
-						{ chapter, completedAt: new Date().toISOString() },
-					]
-				: state.progress.filter((item) => item.chapter !== chapter),
+				? markChapterComplete(state.progress, chapter, new Date().toISOString())
+				: markChapterPending(state.progress, chapter),
 		}));
 	}
 
 	if (appState.plan === null || editing) {
 		return (
 			<div className="app-shell">
-				<Header theme={appState.preferences.theme} onThemeChange={setTheme} />
+				<AppHeader theme={appState.preferences.theme} onThemeChange={setTheme} />
 				{storageIssue && <StorageNotice />}
 				<main className="setup-layout">
 					<section className="card setup-card">
@@ -115,6 +158,7 @@ export function App() {
 						</p>
 						<PlanForm
 							initialPlan={editing ? (appState.plan ?? undefined) : undefined}
+							initialProgress={editing ? appState.progress : []}
 							startDate={today}
 							targetDate={defaultTargetDate}
 							onSubmit={savePlan}
@@ -124,6 +168,7 @@ export function App() {
 							<p className="muted">Já tem um backup deste navegador ou de outro dispositivo?</p>
 							<BackupRestoreControl
 								onRestore={(state) => {
+									setCanPersist(true);
 									setAppState(state);
 									applyTheme(state.preferences.theme);
 								}}
@@ -137,7 +182,7 @@ export function App() {
 
 	return (
 		<div className="app-shell">
-			<Header
+			<AppHeader
 				theme={appState.preferences.theme}
 				onThemeChange={setTheme}
 				onSettings={() => setShowSettings((value) => !value)}
@@ -203,14 +248,33 @@ export function App() {
 					<SettingsPanel
 						state={appState}
 						schedule={computedSchedule}
-						todayAssignment={projectedToday}
+						todayAssignment={todayAssignment}
 						onRestore={(state) => {
+							setCanPersist(true);
 							setAppState(state);
 							applyTheme(state.preferences.theme);
 							setShowSettings(false);
 						}}
-						onResetProgress={() => setAppState((state) => ({ ...state, progress: [] }))}
+						onResetProgress={() => {
+							setCanPersist(true);
+							setAppState((state) => ({ ...state, progress: [] }));
+						}}
+						onMarkRange={(start, end) => {
+							setCanPersist(true);
+							setAppState((state) => ({
+								...state,
+								progress: mergeCompletedRange(state.progress, start, end, new Date().toISOString()),
+							}));
+						}}
+						onUnmarkRange={(start, end) => {
+							setCanPersist(true);
+							setAppState((state) => ({
+								...state,
+								progress: markRangePending(state.progress, start, end),
+							}));
+						}}
 						onRemovePlan={() => {
+							setCanPersist(true);
 							setAppState((state) => ({
 								...state,
 								plan: null,
@@ -245,7 +309,7 @@ export function App() {
 						<p className="eyebrow">Sua leitura começa em</p>
 						<h2>{formatLocalDate(appState.plan.startDate)}</h2>
 						<ScheduleList
-							assignments={computedSchedule.assignments}
+							assignments={displayAssignments ?? []}
 							today={today}
 							completed={completedSet}
 							onToggle={toggleChapter}
@@ -263,7 +327,7 @@ export function App() {
 							</span>
 						</div>
 						<ScheduleList
-							assignments={computedSchedule?.assignments ?? []}
+							assignments={displayAssignments ?? []}
 							today={today}
 							completed={completedSet}
 							onToggle={toggleChapter}
@@ -281,9 +345,9 @@ export function App() {
 								</div>
 								<span className="today-date">HOJE</span>
 							</div>
-							{projectedToday?.chapters.length ? (
+							{todayAssignment?.chapters.length ? (
 								<ChapterList
-									chapters={projectedToday.chapters}
+									chapters={todayAssignment.chapters}
 									completed={completedSet}
 									onToggle={toggleChapter}
 								/>
@@ -300,7 +364,7 @@ export function App() {
 									Ver plano
 								</button>
 							</div>
-							<UpcomingList assignments={computedSchedule?.assignments ?? []} today={today} />
+							<UpcomingList assignments={displayAssignments ?? []} today={today} />
 						</section>
 					</>
 				)}
@@ -309,146 +373,12 @@ export function App() {
 	);
 }
 
-function Header({
-	theme,
-	onThemeChange,
-	onSettings,
-}: {
-	theme: ThemePreference;
-	onThemeChange: (theme: ThemePreference) => void;
-	onSettings?: () => void;
-}) {
-	return (
-		<header className="app-header">
-			<a
-				className="brand"
-				href={import.meta.env.BASE_URL}
-				aria-label={`${appConfig.name} — início`}
-			>
-				<img
-					className="brand-logo-light"
-					src={`${import.meta.env.BASE_URL}assets/zion-logo-horizontal.png`}
-					alt=""
-				/>
-				<img
-					className="brand-logo-dark"
-					src={`${import.meta.env.BASE_URL}assets/zion-logo-horizontal-dark.png`}
-					alt=""
-				/>
-			</a>
-			<div className="header-actions">
-				<label htmlFor="theme-select" className="sr-only">
-					Tema
-				</label>
-				<select
-					id="theme-select"
-					className="icon-button"
-					value={theme}
-					onChange={(event) => onThemeChange(event.target.value as ThemePreference)}
-				>
-					<option value="system">Sistema</option>
-					<option value="dark">Escuro</option>
-					<option value="light">Claro</option>
-				</select>
-				{onSettings && (
-					<button
-						className="icon-button"
-						type="button"
-						onClick={onSettings}
-						aria-label="Configurações"
-					>
-						⚙
-					</button>
-				)}
-			</div>
-		</header>
-	);
-}
-
 function StorageNotice() {
 	return (
 		<p className="notice" role="status">
-			Os dados locais não puderam ser lidos ou salvos. Você pode continuar, mas as alterações talvez
-			não permaneçam após fechar esta página.
+			Os dados locais estão indisponíveis ou têm um formato não reconhecido. Eles não serão
+			substituídos automaticamente; exporte ou restaure um backup, ou crie um plano para iniciar um
+			novo estado.
 		</p>
-	);
-}
-
-function ChapterList({
-	chapters,
-	completed,
-	onToggle,
-}: {
-	chapters: ChapterRef[];
-	completed: Set<ChapterRef>;
-	onToggle: (chapter: ChapterRef, checked: boolean) => void;
-}) {
-	return (
-		<div className="reading-list">
-			{chapters.map((chapter) => (
-				<label className="reading-row" key={chapter}>
-					<input
-						type="checkbox"
-						checked={completed.has(chapter)}
-						onChange={(event) => onToggle(chapter, event.target.checked)}
-					/>
-					<span>{formatReferences([chapter])}</span>
-				</label>
-			))}
-		</div>
-	);
-}
-
-function ScheduleList({
-	assignments,
-	today,
-	completed,
-	onToggle,
-}: {
-	assignments: DailyAssignment[];
-	today: LocalDate;
-	completed: Set<ChapterRef>;
-	onToggle: (chapter: ChapterRef, checked: boolean) => void;
-}) {
-	return (
-		<div className="schedule-list">
-			{assignments.map((assignment) => (
-				<article className="schedule-day" key={assignment.date}>
-					<div className="schedule-day-heading">
-						<time dateTime={assignment.date}>{describeDay(assignment.date, today)}</time>
-						<strong>
-							{assignment.chapters.length ? formatReferences(assignment.chapters) : "Dia livre"}
-						</strong>
-					</div>
-					{assignment.chapters.length > 0 && (
-						<ChapterList chapters={assignment.chapters} completed={completed} onToggle={onToggle} />
-					)}
-				</article>
-			))}
-		</div>
-	);
-}
-
-function UpcomingList({
-	assignments,
-	today,
-}: {
-	assignments: DailyAssignment[];
-	today: LocalDate;
-}) {
-	const upcoming = assignments
-		.filter((assignment) => assignment.date > today && assignment.chapters.length > 0)
-		.slice(0, 4);
-	return upcoming.length ? (
-		<div className="upcoming-list">
-			{upcoming.map((assignment) => (
-				<div className="upcoming-item" key={assignment.date}>
-					<time dateTime={assignment.date}>{describeDay(assignment.date, today)}</time>
-					<strong>{formatReferences(assignment.chapters)}</strong>
-				</div>
-			))}
-		</div>
-	) : (
-		<p className="muted">Nenhuma leitura futura pendente.</p>
 	);
 }

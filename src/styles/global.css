@@ -225,6 +225,15 @@ button {
 	padding: 0;
 	border: 0;
 }
+.reference-picker {
+	padding: 0;
+}
+.field-hint {
+	margin-block: 0.6rem 0;
+}
+.progress-range {
+	margin-block: 1rem;
+}
 .form-fieldset legend {
 	margin-bottom: 0.65rem;
 	font-weight: 700;

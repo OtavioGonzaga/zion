@@ -1,5 +1,12 @@
 import type { ChapterRef, LocalDate } from "../bible/types";
 
+export interface ReadingBlock {
+	id: string;
+	order: number;
+	chapters: ChapterRef[];
+	weight: number;
+}
+
 export interface ReadingPlan {
 	startReference: ChapterRef;
 	endReference: ChapterRef;
@@ -19,6 +26,7 @@ export interface ScheduledBlock {
 }
 
 export interface DailyAssignment {
+	/** Frozen reading target for this local calendar day; progress changes do not alter its chapters. */
 	date: LocalDate;
 	blocks: ScheduledBlock[];
 	chapters: ChapterRef[];

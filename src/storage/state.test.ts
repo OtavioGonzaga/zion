@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	loadAppState,
-	migratePersistedState,
-	parseAppState,
-	saveAppState,
-	STORAGE_KEY,
-} from "./state";
+import { loadAppState, parseAppState, saveAppState, STORAGE_KEY } from "./state";
 import type { StorageLike } from "./state";
 
 function memoryStorage(initial: Record<string, string> = {}): StorageLike {
@@ -60,12 +54,6 @@ describe("versioned local storage", () => {
 		});
 	});
 
-	it("uses the migration entry point and defaults missing preference fields", () => {
-		const result = migratePersistedState({ ...savedState, preferences: {} });
-		expect(result.ok).toBe(true);
-		if (result.ok) expect(result.state.preferences.theme).toBe("system");
-	});
-
 	it("does not throw when storage is unavailable or operations fail", () => {
 		const brokenStorage: StorageLike = {
 			getItem: () => {
@@ -82,6 +70,16 @@ describe("versioned local storage", () => {
 	it("keeps a readable fallback when persisted JSON is corrupt", () => {
 		const result = loadAppState(memoryStorage({ [STORAGE_KEY]: "not-json" }));
 		expect(result.issue).toBe("invalid-json");
+		expect(result.canPersist).toBe(false);
 		expect(result.state.plan).toBeNull();
+	});
+
+	it("does not overwrite corrupt or unsupported persisted state during load", () => {
+		for (const raw of ["not-json", JSON.stringify({ schemaVersion: 999 })]) {
+			const storage = memoryStorage({ [STORAGE_KEY]: raw });
+			const loaded = loadAppState(storage);
+			expect(loaded.canPersist).toBe(false);
+			expect(storage.getItem(STORAGE_KEY)).toBe(raw);
+		}
 	});
 });

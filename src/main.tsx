@@ -12,7 +12,8 @@ if (!rootElement) {
 }
 
 document.title = appConfig.name;
-const theme = loadAppState().state.preferences.theme;
+const boot = loadAppState();
+const theme = boot.state.preferences.theme;
 document.documentElement.dataset.theme =
 	theme === "system"
 		? window.matchMedia("(prefers-color-scheme: light)").matches
@@ -22,6 +23,10 @@ document.documentElement.dataset.theme =
 
 createRoot(rootElement).render(
 	<StrictMode>
-		<App />
+		<App
+			initialState={boot.state}
+			initialStorageIssue={boot.issue}
+			canPersistInitially={boot.canPersist}
+		/>
 	</StrictMode>,
 );
