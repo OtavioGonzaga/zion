@@ -36,7 +36,7 @@ describe("release preparation", () => {
 
 	it("rejects invalid, duplicate, and non-increasing versions", () => {
 		const changelog = `## [Unreleased]\n\n- Feature.\n${history}`;
-		for (const version of ["v0.3.0", "0.1.1", "0.1.0", "0.2"]) {
+		for (const version of ["v0.3.0", "0.2.0+build.1", "0.1.1", "0.1.0", "0.2"]) {
 			expect(() =>
 				prepareReleaseFiles({ version, packageJson, changelog, date: "2026-10-06" }),
 			).toThrow();

@@ -9,7 +9,12 @@ import {
 	markRangePending,
 	mergeCompletedRange,
 } from "../domain/plan/progress";
-import { findAssignment, generateSchedule, getPlanProgress } from "../domain/plan/scheduler";
+import {
+	findAssignment,
+	generateAdaptiveSchedule,
+	generateSchedule,
+	getPlanProgress,
+} from "../domain/plan/scheduler";
 import type { ReadingPlan } from "../domain/plan/types";
 import { AppHeader } from "../components/AppHeader";
 import { ScheduleList, UpcomingList } from "../features/schedule/ScheduleList";
@@ -60,14 +65,22 @@ export function App({
 	const projectedToday = computedSchedule ? findAssignment(computedSchedule, today) : undefined;
 	const todayAssignment =
 		appState.dailyAssignment?.date === today ? appState.dailyAssignment : projectedToday;
-	const displayAssignments = computedSchedule?.assignments.map((assignment) =>
-		assignment.date === today && todayAssignment ? todayAssignment : assignment,
-	);
+	const displaySchedule = appState.plan
+		? generateAdaptiveSchedule({
+				template: readingTemplate,
+				plan: appState.plan,
+				progress: appState.progress,
+				today,
+				todayAssignment,
+			})
+		: null;
 	const summary = appState.plan ? getPlanProgress(appState.plan, appState.progress) : null;
 	const completedSet = new Set(appState.progress.map((item) => item.chapter));
 
 	useEffect(() => {
-		if (canPersist && !saveAppState(appState)) setStorageIssue("unavailable");
+		if (!canPersist) return;
+		if (saveAppState(appState)) setStorageIssue(null);
+		else setStorageIssue("unavailable");
 	}, [appState, canPersist]);
 
 	useEffect(() => {
@@ -158,7 +171,6 @@ export function App({
 						</p>
 						<PlanForm
 							initialPlan={editing ? (appState.plan ?? undefined) : undefined}
-							initialProgress={editing ? appState.progress : []}
 							startDate={today}
 							targetDate={defaultTargetDate}
 							onSubmit={savePlan}
@@ -247,7 +259,7 @@ export function App({
 				{showSettings ? (
 					<SettingsPanel
 						state={appState}
-						schedule={computedSchedule}
+						schedule={displaySchedule}
 						todayAssignment={todayAssignment}
 						onRestore={(state) => {
 							setCanPersist(true);
@@ -309,7 +321,7 @@ export function App({
 						<p className="eyebrow">Sua leitura começa em</p>
 						<h2>{formatLocalDate(appState.plan.startDate)}</h2>
 						<ScheduleList
-							assignments={displayAssignments ?? []}
+							assignments={displaySchedule?.assignments ?? []}
 							today={today}
 							completed={completedSet}
 							onToggle={toggleChapter}
@@ -327,7 +339,7 @@ export function App({
 							</span>
 						</div>
 						<ScheduleList
-							assignments={displayAssignments ?? []}
+							assignments={displaySchedule?.assignments ?? []}
 							today={today}
 							completed={completedSet}
 							onToggle={toggleChapter}
@@ -364,7 +376,7 @@ export function App({
 									Ver plano
 								</button>
 							</div>
-							<UpcomingList assignments={displayAssignments ?? []} today={today} />
+							<UpcomingList assignments={displaySchedule?.assignments ?? []} today={today} />
 						</section>
 					</>
 				)}

@@ -1,5 +1,5 @@
 import { compareChapterRefs, getChapterPosition, getChapterRange } from "../bible/bible";
-import { compareLocalDates, listDates } from "../bible/date";
+import { addDays, compareLocalDates, listDates } from "../bible/date";
 import type { ChapterRef, LocalDate } from "../bible/types";
 import type {
 	CompletedChapter,
@@ -104,6 +104,53 @@ export function generateSchedule({
 
 	for (const assignment of assignments) assignment.chapters.sort(compareChapterRefs);
 	return { status, assignments, completedChapters, remainingChapters };
+}
+
+interface AdaptiveScheduleInput extends ScheduleInput {
+	todayAssignment?: DailyAssignment;
+}
+
+/**
+ * Keeps the current day's saved target visible while projecting all other
+ * pending chapters from tomorrow onward. The frozen chapters are reserved only
+ * for scheduling; their actual completion state remains unchanged.
+ */
+export function generateAdaptiveSchedule({
+	todayAssignment,
+	...input
+}: AdaptiveScheduleInput): Schedule {
+	const schedule = generateSchedule(input);
+	if (!todayAssignment || todayAssignment.date !== input.today || schedule.status !== "active") {
+		return schedule;
+	}
+
+	const planChapters = new Set(getChapterRange(input.plan.startReference, input.plan.endReference));
+	const reserved = todayAssignment.chapters.filter((chapter) => planChapters.has(chapter));
+	const reservedSet = new Set(reserved);
+	const progress = [
+		...input.progress,
+		...reserved
+			.filter((chapter) => !input.progress.some((completed) => completed.chapter === chapter))
+			.map((chapter) => ({ chapter, completedAt: "reserved-for-today" })),
+	];
+	const future = generateSchedule({
+		...input,
+		progress,
+		today: addDays(input.today, 1),
+	});
+	const frozenAssignment: DailyAssignment = {
+		...todayAssignment,
+		chapters: [...todayAssignment.chapters],
+		blocks: [...todayAssignment.blocks],
+	};
+	const futureAssignments = future.assignments.map((assignment) => ({
+		...assignment,
+		chapters: assignment.chapters.filter((chapter) => !reservedSet.has(chapter)),
+	}));
+	return {
+		...schedule,
+		assignments: [frozenAssignment, ...futureAssignments],
+	};
 }
 
 export function getPlanProgress(plan: ReadingPlan, progress: CompletedChapter[]) {

@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { CompletedChapter, ReadingBlock, ReadingPlan } from "./types";
-import { findAssignment, generateSchedule, getPlanProgress } from "./scheduler";
+import {
+	findAssignment,
+	generateAdaptiveSchedule,
+	generateSchedule,
+	getPlanProgress,
+} from "./scheduler";
 
 const plan: ReadingPlan = {
 	startReference: "JER.6",
@@ -151,6 +156,26 @@ describe("generateSchedule", () => {
 		expect(advanced.assignments.flatMap((day) => day.chapters)).not.toContain("JER.15");
 		const undone = schedule();
 		expect(undone.assignments.flatMap((day) => day.chapters)).toContain("JER.15");
+	});
+
+	it("reserves a frozen daily target before redistributing the future", () => {
+		const initial = schedule();
+		const frozenToday = findAssignment(initial, "2026-10-05");
+		if (!frozenToday) throw new Error("Expected an assignment for today");
+		const progress: CompletedChapter[] = [{ chapter: "JER.6", completedAt: "2026-10-05" }];
+		const result = generateAdaptiveSchedule({
+			template: blocks,
+			plan,
+			progress,
+			today: "2026-10-05",
+			todayAssignment: frozenToday,
+		});
+		expect(result.assignments[0]?.chapters).toEqual(["JER.6"]);
+		expect(result.assignments.slice(1).flatMap(({ chapters }) => chapters)).toContain("JER.7");
+		const displayedPending = result.assignments
+			.flatMap(({ chapters }) => chapters)
+			.filter((chapter) => !new Set(progress.map(({ chapter: item }) => item)).has(chapter));
+		expect(displayedPending).toEqual(result.remainingChapters);
 	});
 
 	it("computes a consistent progress summary", () => {

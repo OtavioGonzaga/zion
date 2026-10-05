@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed
 
 - Keep today's reading assignment stable while adapting future readings to progress changes.
+- Reserve frozen daily chapters before projecting the future schedule, CSV, and print view.
+- Prevent plan edits from inferring newly completed chapters from the “Já li até…” shortcut.
 - Preserve incompatible or corrupt local data until the user explicitly replaces it.
 - Distribute pending reading blocks across available days, including highly uneven block weights.
 - Refresh the active local date at midnight and when the app regains focus.

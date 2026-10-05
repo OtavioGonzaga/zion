@@ -86,6 +86,7 @@ test("keeps today's assignment stable while recalculating future progress", asyn
 	await futureChapter.click();
 	await expect(page.getByText("2 de 17 capítulos")).toBeVisible();
 	await expect(futureChapter).toHaveCount(0);
+	await expect(page.getByRole("checkbox", { name: "Jeremias 7" })).toBeVisible();
 	await page.getByRole("button", { name: "Ver hoje" }).click();
 	await expect(todayChapter).toBeChecked();
 	expect(await todayRows.allTextContents()).toEqual(originalToday);
@@ -95,6 +96,32 @@ test("keeps today's assignment stable while recalculating future progress", asyn
 	expect(await page.locator(".today-card .reading-row span").allTextContents()).toEqual(
 		originalToday,
 	);
+});
+
+test("does not infer new completed chapters when editing the plan start", async ({ page }) => {
+	await page.goto("/");
+	await page.getByLabel("Livro inicial").selectOption("JER");
+	await page.getByLabel("Capítulo inicial").selectOption("6");
+	await page.getByLabel("Livro final").selectOption("JER");
+	await page.getByLabel("Capítulo final").selectOption("15");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+	page.on("dialog", (dialog) => dialog.accept());
+	await page.locator("#progress-end-chapter").selectOption("JER.10");
+	await page.getByRole("button", { name: "Marcar 5 capítulos como lidos" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+	await page.getByRole("button", { name: "Editar plano" }).click();
+	await page.getByLabel("Capítulo inicial").selectOption("4");
+	await page.getByRole("button", { name: "Salvar alterações" }).click();
+	const progress = await page.evaluate(() =>
+		JSON.parse(localStorage.getItem("zion:v1") ?? "{}").progress.map(
+			(item: { chapter: string }) => item.chapter,
+		),
+	);
+	expect(progress).toContain("JER.6");
+	expect(progress).toContain("JER.10");
+	expect(progress).not.toContain("JER.4");
+	expect(progress).not.toContain("JER.5");
 });
 
 test("allows reversing chapter progress individually and by range", async ({ page }) => {
@@ -131,6 +158,7 @@ test("does not overwrite corrupt local data until the user creates a plan", asyn
 	await expect
 		.poll(() => page.evaluate(() => localStorage.getItem("zion:v1")))
 		.not.toBe("not-json");
+	await expect(page.getByRole("status")).toHaveCount(0);
 });
 
 test("refreshes the local reading date across midnight without a reload", async ({ page }) => {

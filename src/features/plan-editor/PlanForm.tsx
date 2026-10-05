@@ -3,13 +3,11 @@ import { ChapterReferencePicker } from "../../components/ChapterReferencePicker"
 import { getChapterRange } from "../../domain/bible/bible";
 import { getBookOptions } from "../../domain/bible/references";
 import type { ChapterRef, LocalDate } from "../../domain/bible/types";
-import { getContiguousCompletedThrough } from "../../domain/plan/progress";
-import type { CompletedChapter, ReadingPlan } from "../../domain/plan/types";
+import type { ReadingPlan } from "../../domain/plan/types";
 import { validatePlan } from "../../domain/plan/validation";
 
 interface PlanFormProps {
 	initialPlan?: ReadingPlan;
-	initialProgress?: CompletedChapter[];
 	startDate: LocalDate;
 	targetDate: LocalDate;
 	onSubmit: (plan: ReadingPlan, completedThrough?: ChapterRef) => void;
@@ -30,7 +28,6 @@ function partsFromReference(
 
 export function PlanForm({
 	initialPlan,
-	initialProgress = [],
 	startDate,
 	targetDate,
 	onSubmit,
@@ -45,14 +42,7 @@ export function PlanForm({
 	const [startDay, setStartDay] = useState<string>(initialPlan?.startDate ?? startDate);
 	const [targetDay, setTargetDay] = useState<string>(initialPlan?.targetDate ?? targetDate);
 	const [errors, setErrors] = useState<ReturnType<typeof validatePlan>>({});
-	const initialReadThrough = initialPlan
-		? getContiguousCompletedThrough(
-				initialPlan.startReference,
-				initialPlan.endReference,
-				initialProgress,
-			)
-		: undefined;
-	const [readThrough, setReadThrough] = useState<ChapterRef | null>(initialReadThrough ?? null);
+	const [readThrough, setReadThrough] = useState<ChapterRef | null>(null);
 	const [readThroughError, setReadThroughError] = useState(false);
 
 	function submit(event: React.FormEvent<HTMLFormElement>) {
