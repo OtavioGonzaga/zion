@@ -1,10 +1,10 @@
 import { compareChapterRefs, getChapterPosition, getChapterRange } from "../bible/bible";
 import { compareLocalDates, listDates } from "../bible/date";
 import type { ChapterRef, LocalDate } from "../bible/types";
-import type { ReadingBlock } from "../../data/reading-template";
 import type {
 	CompletedChapter,
 	DailyAssignment,
+	ReadingBlock,
 	ReadingPlan,
 	Schedule,
 	ScheduledBlock,
@@ -54,9 +54,7 @@ export function generateSchedule({
 
 	const units: ScheduledBlock[] = [];
 	for (const block of [...template].sort((left, right) => left.order - right.order)) {
-		const clipped = block.chapters.filter((chapter) =>
-			rangeSet.has(chapter as ChapterRef),
-		) as ChapterRef[];
+		const clipped = block.chapters.filter((chapter) => rangeSet.has(chapter));
 		const pending = clipped.filter((chapter) => !completedSet.has(chapter));
 		if (pending.length > 0) {
 			units.push({
@@ -67,21 +65,41 @@ export function generateSchedule({
 		}
 	}
 
-	const totalWeight = units.reduce((total, unit) => total + unit.weight, 0);
-	let cumulativeWeight = 0;
-	for (const [unitIndex, unit] of units.entries()) {
-		const midpoint = cumulativeWeight + unit.weight / 2;
-		const dayIndex =
-			units.length <= dates.length
-				? units.length === 1
-					? 0
-					: Math.round((unitIndex / (units.length - 1)) * (dates.length - 1))
-				: Math.min(dates.length - 1, Math.floor((midpoint / totalWeight) * dates.length));
-		const assignment = assignments[dayIndex]!;
-		assignment.blocks.push(unit);
-		assignment.chapters.push(...unit.chapters);
-		assignment.weight += unit.weight;
-		cumulativeWeight += unit.weight;
+	if (units.length <= dates.length) {
+		for (const [unitIndex, unit] of units.entries()) {
+			const dayIndex =
+				units.length === 1 ? 0 : Math.round((unitIndex / (units.length - 1)) * (dates.length - 1));
+			assignments[dayIndex]!.blocks.push(unit);
+		}
+	} else {
+		const prefixWeights = [0];
+		for (const unit of units) prefixWeights.push(prefixWeights.at(-1)! + unit.weight);
+		let firstUnit = 0;
+		for (let dayIndex = 0; dayIndex < dates.length; dayIndex += 1) {
+			const daysAfter = dates.length - dayIndex - 1;
+			const latestEnd = units.length - daysAfter;
+			if (daysAfter === 0) {
+				assignments[dayIndex]!.blocks.push(...units.slice(firstUnit));
+				break;
+			}
+			const targetWeight = (prefixWeights.at(-1)! * (dayIndex + 1)) / dates.length;
+			let endUnit = firstUnit + 1;
+			for (let candidate = firstUnit + 2; candidate <= latestEnd; candidate += 1) {
+				if (
+					Math.abs(prefixWeights[candidate]! - targetWeight) <
+					Math.abs(prefixWeights[endUnit]! - targetWeight)
+				)
+					endUnit = candidate;
+			}
+			assignments[dayIndex]!.blocks.push(...units.slice(firstUnit, endUnit));
+			firstUnit = endUnit;
+		}
+	}
+	for (const assignment of assignments) {
+		for (const unit of assignment.blocks) {
+			assignment.chapters.push(...unit.chapters);
+			assignment.weight += unit.weight;
+		}
 	}
 
 	for (const assignment of assignments) assignment.chapters.sort(compareChapterRefs);

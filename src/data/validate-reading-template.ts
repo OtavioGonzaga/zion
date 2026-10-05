@@ -1,5 +1,5 @@
 import type { BibleBook } from "./bible-books";
-import type { ReadingBlock } from "./reading-template";
+import type { ReadingBlock } from "../domain/plan/types";
 
 export function validateReadingTemplate(books: BibleBook[], blocks: ReadingBlock[]): string[] {
 	const errors: string[] = [];

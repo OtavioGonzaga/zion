@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { ReadingBlock } from "../../data/reading-template";
-import type { CompletedChapter, ReadingPlan } from "./types";
+import type { CompletedChapter, ReadingBlock, ReadingPlan } from "./types";
 import { findAssignment, generateSchedule, getPlanProgress } from "./scheduler";
 
 const plan: ReadingPlan = {
@@ -94,6 +93,32 @@ describe("generateSchedule", () => {
 		const result = schedule({ plan: { ...plan, targetDate: "2026-10-06" } });
 		expect(result.assignments).toHaveLength(2);
 		expect(result.assignments.some((day) => day.blocks.length > 1)).toBe(true);
+	});
+
+	it("assigns at least one unit to every eligible day with extreme weights", () => {
+		const extremeBlocks: ReadingBlock[] = [
+			{ id: "heavy", order: 1, chapters: ["GEN.1"], weight: 1 },
+			{ id: "light-a", order: 2, chapters: ["GEN.2"], weight: 0.09 },
+			{ id: "light-b", order: 3, chapters: ["GEN.3"], weight: 0.16 },
+			{ id: "light-c", order: 4, chapters: ["GEN.4"], weight: 0.14 },
+		];
+		const result = schedule({
+			template: extremeBlocks,
+			plan: {
+				...plan,
+				startReference: "GEN.1",
+				endReference: "GEN.4",
+				targetDate: "2026-10-07",
+			},
+		});
+		expect(result.assignments).toHaveLength(3);
+		expect(result.assignments.every(({ chapters }) => chapters.length > 0)).toBe(true);
+		expect(result.assignments.flatMap(({ chapters }) => chapters)).toEqual([
+			"GEN.1",
+			"GEN.2",
+			"GEN.3",
+			"GEN.4",
+		]);
 	});
 
 	it("returns explicit future, completed, and expired states", () => {

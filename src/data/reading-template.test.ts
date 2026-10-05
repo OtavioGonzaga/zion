@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { bibleBooks, bibleChapters } from "./bible-books";
 import { readingTemplate } from "./reading-template";
 import { validateReadingTemplate } from "./validate-reading-template";
+import type { ReadingBlock } from "../domain/plan/types";
 
 describe("canonical reading template", () => {
 	it("covers the canonical Bible exactly once and in order", () => {
@@ -24,7 +25,7 @@ describe("canonical reading template", () => {
 			{ id: "duplicate", order: 2, chapters: [], weight: 0 },
 			{ id: "duplicate", order: 3, chapters: ["GEN.1", "GEN.1", "UNKNOWN.1"], weight: Number.NaN },
 		];
-		const errors = validateReadingTemplate(bibleBooks, invalid);
+		const errors = validateReadingTemplate(bibleBooks, invalid as unknown as ReadingBlock[]);
 		expect(errors).toContain("Duplicate block id: duplicate");
 		expect(errors).toContain("Invalid order at block duplicate");
 		expect(errors).toContain("Empty block: duplicate");
