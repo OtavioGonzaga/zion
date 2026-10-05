@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Synchronize end-to-end navigation coverage with the rendered reading view.
 - Reset completed-reading filters when their selected book no longer has completed chapters.
 - Preserve browser history when canceling navigation with unsaved plan changes.
+- Clear canceled history navigation before handling a new guarded destination.
 
 ## [0.2.0] - 2026-10-05
 

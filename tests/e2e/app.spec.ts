@@ -130,6 +130,19 @@ test("preserves browser history when discarding dirty edits through Back", async
 	await expect(page.getByRole("heading", { name: "Configurações" })).toBeVisible();
 });
 
+test("uses an explicit destination after canceling a guarded Back navigation", async ({ page }) => {
+	await page.goto("/");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+	await page.getByRole("button", { name: "Editar plano" }).click();
+	await page.getByLabel("Capítulo inicial").selectOption("2");
+	await page.goBack();
+	await page.getByRole("dialog").getByRole("button", { name: "Cancelar" }).click();
+	await page.getByRole("link", { name: "Plano" }).click();
+	await page.getByRole("dialog").getByRole("button", { name: "Descartar alterações" }).click();
+	await expect(page.getByRole("heading", { name: "Plano" })).toBeVisible();
+});
+
 test("filters completed chapters to a selected book", async ({ page }) => {
 	await page.goto("/");
 	await page.getByLabel("Livro inicial").selectOption("JER");

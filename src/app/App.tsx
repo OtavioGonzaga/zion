@@ -70,11 +70,12 @@ export function App({
 	const headingRef = useRef<HTMLHeadingElement>(null);
 	const navigated = useRef(false);
 	const hasPlan = Boolean(appState.plan);
-	const { view, navigate, reset, continuePendingNavigation } = useAppNavigation(hasPlan, (next) => {
-		if (effectiveView !== "edit-plan" || !editDirty) return true;
-		setDiscardTarget(next === "setup" ? "today" : next);
-		return false;
-	});
+	const { view, navigate, reset, continuePendingNavigation, cancelPendingNavigation } =
+		useAppNavigation(hasPlan, (next) => {
+			if (effectiveView !== "edit-plan" || !editDirty) return true;
+			setDiscardTarget(next === "setup" ? "today" : next);
+			return false;
+		});
 	const today = useCurrentLocalDate();
 	const defaultTargetDate = addDays(today, 364);
 	const computedSchedule = appState.plan
@@ -191,6 +192,7 @@ export function App({
 
 	function go(next: AppView) {
 		if (effectiveView === "edit-plan" && editDirty) {
+			cancelPendingNavigation();
 			setDiscardTarget(next);
 			return;
 		}
@@ -423,7 +425,10 @@ export function App({
 				message="As alterações feitas no plano ainda não foram salvas. Se sair agora, elas serão perdidas."
 				confirmLabel="Descartar alterações"
 				destructive
-				onCancel={() => setDiscardTarget(null)}
+				onCancel={() => {
+					cancelPendingNavigation();
+					setDiscardTarget(null);
+				}}
 				onConfirm={() => {
 					if (discardTarget) {
 						setEditDirty(false);

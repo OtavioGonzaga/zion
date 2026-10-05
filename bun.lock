@@ -5,7 +5,7 @@
     "": {
       "name": "zion",
       "dependencies": {
-        "lucide-react": "^1.52.0",
+        "lucide-react": "1.52.0",
         "react": "19.2.3",
         "react-dom": "19.2.3",
       },

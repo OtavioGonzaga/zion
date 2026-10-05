@@ -84,6 +84,10 @@ export function useAppNavigation(
 		window.history.go(delta);
 		return true;
 	}, []);
+	const cancelPendingNavigation = useCallback(() => {
+		pendingHistoryDelta.current = null;
+		allowPendingNavigationRef.current = false;
+	}, []);
 	const reset = useCallback(() => {
 		window.history.replaceState(
 			{ zionNavigationIndex: indexRef.current },
@@ -93,5 +97,5 @@ export function useAppNavigation(
 		viewRef.current = "setup";
 		setView("setup");
 	}, []);
-	return { view, navigate, reset, continuePendingNavigation };
+	return { view, navigate, reset, continuePendingNavigation, cancelPendingNavigation };
 }

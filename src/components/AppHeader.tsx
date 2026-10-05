@@ -1,5 +1,5 @@
 import { Monitor, Moon, Settings, Sun } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { appConfig } from "../config/app";
 import type { ThemePreference } from "../storage/state";
 
@@ -22,6 +22,8 @@ export function AppHeader({
 }) {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
+	const themeButtonRef = useRef<HTMLButtonElement>(null);
+	const themeMenuId = useId();
 	const selectedTheme = themeOptions.find((option) => option.value === theme)!;
 	const SelectedIcon = selectedTheme.Icon;
 
@@ -31,7 +33,11 @@ export function AppHeader({
 			if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false);
 		};
 		const closeOnEscape = (event: KeyboardEvent) => {
-			if (event.key === "Escape") setMenuOpen(false);
+			if (event.key === "Escape") {
+				event.preventDefault();
+				setMenuOpen(false);
+				themeButtonRef.current?.focus();
+			}
 		};
 		window.addEventListener("mousedown", closeOnOutsideClick);
 		window.addEventListener("keydown", closeOnEscape);
@@ -67,18 +73,19 @@ export function AppHeader({
 			<div className="header-actions">
 				<div className="theme-menu" ref={menuRef}>
 					<button
+						ref={themeButtonRef}
 						className="icon-button"
 						type="button"
 						aria-label={`Tema: ${selectedTheme.label}`}
-						aria-haspopup="true"
 						aria-expanded={menuOpen}
+						aria-controls={menuOpen ? themeMenuId : undefined}
 						title={`Tema: ${selectedTheme.label}`}
 						onClick={() => setMenuOpen((open) => !open)}
 					>
 						<SelectedIcon size={18} strokeWidth={1.8} aria-hidden="true" />
 					</button>
 					{menuOpen && (
-						<div className="theme-menu-popup" aria-label="Selecionar tema">
+						<div className="theme-menu-popup" id={themeMenuId} aria-label="Selecionar tema">
 							{themeOptions.map(({ value, label, Icon }) => (
 								<button
 									key={value}
