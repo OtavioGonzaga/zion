@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-05
+
 ### Fixed
 
 - Ensure Print / Save as PDF renders the complete reading schedule after closing settings, with Zion branding and print-friendly colors.
