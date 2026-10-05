@@ -1,8 +1,4 @@
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import { useEffect, useId, useRef } from "react";
 
 export function ConfirmDialog({
 	open,
@@ -21,45 +17,43 @@ export function ConfirmDialog({
 	onCancel: () => void;
 	onConfirm: () => void;
 }) {
+	const dialogRef = useRef<HTMLDialogElement>(null);
+	const titleId = useId();
+	const descriptionId = useId();
+
+	useEffect(() => {
+		const dialog = dialogRef.current;
+		if (!dialog) return;
+		if (open && !dialog.open) dialog.showModal();
+		if (!open && dialog.open) dialog.close();
+	}, [open]);
+
 	return (
-		<Dialog
-			open={open}
-			onClose={onCancel}
-			aria-labelledby="confirm-dialog-title"
-			aria-describedby="confirm-dialog-description"
-			slotProps={{
-				paper: {
-					sx: {
-						backgroundColor: "var(--color-surface)",
-						backgroundImage: "none",
-						color: "var(--color-text)",
-						border: "1px solid var(--color-border)",
-					},
-				},
+		<dialog
+			className="confirm-dialog"
+			ref={dialogRef}
+			aria-labelledby={titleId}
+			aria-describedby={descriptionId}
+			onCancel={(event) => {
+				event.preventDefault();
+				onCancel();
 			}}
 		>
-			<DialogTitle id="confirm-dialog-title">{title}</DialogTitle>
-			<DialogContent>
-				<DialogContentText
-					id="confirm-dialog-description"
-					sx={{ color: "var(--color-text-muted)" }}
-				>
-					{message}
-				</DialogContentText>
-			</DialogContent>
-			<DialogActions>
-				<button className="button" type="button" onClick={onCancel}>
+			<h2 id={titleId}>{title}</h2>
+			<p id={descriptionId}>{message}</p>
+			<div className="confirm-dialog-actions">
+				<button className="button" type="button" onClick={onCancel} autoFocus={destructive}>
 					Cancelar
 				</button>
 				<button
 					className={`button${destructive ? " button-danger" : " button-primary"}`}
 					type="button"
 					onClick={onConfirm}
-					autoFocus
+					autoFocus={!destructive}
 				>
 					{confirmLabel}
 				</button>
-			</DialogActions>
-		</Dialog>
+			</div>
+		</dialog>
 	);
 }

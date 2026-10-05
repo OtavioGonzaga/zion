@@ -52,6 +52,10 @@ analytics.
   needed.
 - Prefer small functions, explicit data, and few dependencies over framework
   abstractions or global state managers.
+- Use `lucide-react` for interface icons. Do not add a full component/UI framework
+  only to provide icons or basic controls.
+- Prefer native HTML primitives and the project's CSS tokens for small controls,
+  menus, and confirmation dialogs.
 - Use semantic HTML, keyboard-accessible controls, visible focus states, and
   responsive mobile-first layouts.
 - Use Vitest for domain, storage, and export behavior; use Playwright for user

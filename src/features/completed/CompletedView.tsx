@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatLocalDate, getCurrentLocalDate } from "../../domain/bible/date";
 import { formatReferences } from "../../domain/bible/references";
 import type { ChapterRef } from "../../domain/bible/types";
@@ -28,6 +28,9 @@ export function CompletedView({
 	);
 	const groups = groupCompletedByLocalDate(items);
 	const books = getCompletedBooks(allItems);
+	useEffect(() => {
+		if (book && !books.includes(book)) setBook("");
+	}, [book, books]);
 	return (
 		<section className="card completed-card" aria-labelledby="completed-heading">
 			<div className="section-heading">

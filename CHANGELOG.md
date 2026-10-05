@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Replace overlapping navigation states with one exclusive application view and keep settings and plan editing inside a consistent shell.
 - Improve mobile navigation, focus management, and user feedback.
+- Simplify UI dependencies with native controls and lightweight interface icons.
+- Improve navigation history handling while editing plans and preserve the originating view after printing.
+
+### Fixed
+
+- Synchronize end-to-end navigation coverage with the rendered reading view.
+- Reset completed-reading filters when their selected book no longer has completed chapters.
+- Preserve browser history when canceling navigation with unsaved plan changes.
 
 ## [0.2.0] - 2026-10-05
 

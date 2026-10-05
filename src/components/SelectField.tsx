@@ -1,4 +1,4 @@
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { ChevronDown } from "lucide-react";
 import type { SelectHTMLAttributes } from "react";
 
 interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -9,7 +9,12 @@ export function SelectField({ containerClassName, children, ...selectProps }: Se
 	return (
 		<span className={`select-control${containerClassName ? ` ${containerClassName}` : ""}`}>
 			<select {...selectProps}>{children}</select>
-			<KeyboardArrowDownIcon className="select-control-arrow" aria-hidden="true" />
+			<ChevronDown
+				className="select-control-arrow"
+				size={18}
+				strokeWidth={1.8}
+				aria-hidden="true"
+			/>
 		</span>
 	);
 }

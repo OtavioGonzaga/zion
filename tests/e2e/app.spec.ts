@@ -112,6 +112,24 @@ test("returns from plan editing to its origin and protects browser Back when dir
 	await expect(page.getByRole("heading", { name: "Editar plano" })).toBeVisible();
 });
 
+test("preserves browser history when discarding dirty edits through Back", async ({ page }) => {
+	await page.goto("/");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+	await page.getByRole("button", { name: "Editar plano" }).click();
+	await page.getByLabel("Capítulo inicial").selectOption("2");
+	await page.goBack();
+	await page.getByRole("dialog").getByRole("button", { name: "Cancelar" }).click();
+	await expect(page.getByRole("heading", { name: "Editar plano" })).toBeVisible();
+	await page.goBack();
+	await page.getByRole("dialog").getByRole("button", { name: "Descartar alterações" }).click();
+	await expect(page.getByRole("heading", { name: "Configurações" })).toBeVisible();
+	await page.goBack();
+	await expect(page.getByRole("link", { name: "Hoje" })).toHaveAttribute("aria-current", "page");
+	await page.goForward();
+	await expect(page.getByRole("heading", { name: "Configurações" })).toBeVisible();
+});
+
 test("filters completed chapters to a selected book", async ({ page }) => {
 	await page.goto("/");
 	await page.getByLabel("Livro inicial").selectOption("JER");
@@ -207,6 +225,8 @@ test("keeps today's assignment stable while recalculating future progress", asyn
 	await expect(futureChapter).toHaveCount(0);
 	await expect(page.getByRole("checkbox", { name: "Jeremias 7" })).toBeVisible();
 	await page.getByRole("link", { name: "Hoje" }).click();
+	await expect(page.getByRole("link", { name: "Hoje" })).toHaveAttribute("aria-current", "page");
+	await expect(page.locator(".today-card")).toBeVisible();
 	await expect(todayChapter).toBeChecked();
 	expect(await todayRows.allTextContents()).toEqual(originalToday);
 	await expect(page.getByRole("heading", { name: "Jeremias 6–22" })).toBeVisible();
@@ -359,7 +379,7 @@ test("persists the selected theme", async ({ page }) => {
 	await page.getByRole("button", { name: "Criar plano" }).click();
 
 	await page.getByRole("button", { name: "Tema: Sistema" }).click();
-	await page.getByRole("menuitem", { name: "Claro" }).click();
+	await page.getByRole("button", { name: "Claro" }).click();
 	await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 	await page.reload();
 	await expect(page.getByRole("button", { name: "Tema: Claro" })).toBeVisible();
@@ -372,10 +392,11 @@ test("uses the active application theme in confirmation modals and closes withou
 	await page.goto("/");
 	await page.getByRole("button", { name: "Criar plano" }).click();
 	await page.getByRole("button", { name: "Tema: Sistema" }).click();
-	await page.getByRole("menuitem", { name: "Escuro" }).click();
+	await page.getByRole("button", { name: "Escuro" }).click();
 	await page.getByRole("button", { name: "Configurações" }).click();
 	await page.getByRole("button", { name: "Resetar progresso" }).click();
-	const modalPaper = page.locator(".MuiDialog-paper");
+	const modalPaper = page.getByRole("dialog");
+	await expect(page.getByRole("dialog").getByRole("button", { name: "Cancelar" })).toBeFocused();
 	const expectedSurface = await page.evaluate(() => {
 		const probe = document.createElement("div");
 		probe.style.backgroundColor = "var(--color-surface)";
@@ -387,9 +408,41 @@ test("uses the active application theme in confirmation modals and closes withou
 	await expect
 		.poll(() => modalPaper.evaluate((node) => getComputedStyle(node).backgroundColor))
 		.toBe(expectedSurface);
-	await page.getByRole("dialog").getByRole("button", { name: "Cancelar" }).click();
+	await page.keyboard.press("Escape");
 	await expect(page.getByRole("dialog")).toHaveCount(0);
 	await expect(page.getByRole("heading", { name: "Confirmar ação" })).toHaveCount(0);
+});
+
+test("resets an invalid completed-book filter after its final result is removed", async ({
+	page,
+}) => {
+	await page.goto("/");
+	await page.getByLabel("Livro inicial").selectOption("OBA");
+	await page.getByLabel("Capítulo inicial").selectOption("1");
+	await page.getByLabel("Livro final").selectOption("JON");
+	await page.getByLabel("Capítulo final").selectOption("1");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+	await page.locator("#progress-end-book").selectOption("JON");
+	await page.locator("#progress-end-chapter").selectOption("JON.1");
+	await page.getByRole("button", { name: /Marcar .* capítulos como lidos/ }).click();
+	await page.getByRole("dialog").getByRole("button", { name: "Marcar como lidos" }).click();
+	await page.getByRole("link", { name: "Concluídos" }).click();
+	await page.getByLabel("Filtrar por livro").selectOption("OBA");
+	await page.locator(".completed-row").first().getByRole("checkbox").click();
+	await expect(page.getByLabel("Filtrar por livro")).toHaveValue("");
+	await expect(page.getByRole("checkbox", { name: "Jonas 1" })).toBeVisible();
+});
+
+test("returns to settings after printing", async ({ page }) => {
+	await page.goto("/");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+	await page.evaluate(() => {
+		window.print = () => window.dispatchEvent(new Event("afterprint"));
+	});
+	await page.getByRole("button", { name: "Imprimir / Salvar em PDF" }).click();
+	await expect(page.getByRole("heading", { name: "Configurações" })).toBeVisible();
 });
 
 test("shows an expired-plan state and permits extending the target date", async ({ page }) => {

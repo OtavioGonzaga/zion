@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { appConfig } from "../config/app";
-import { addDays, formatLocalDate, listDates } from "../domain/bible/date";
-import { formatReferenceRange } from "../domain/bible/references";
+import { addDays } from "../domain/bible/date";
+import { formatReferenceRange, formatReferences } from "../domain/bible/references";
 import type { ChapterRef } from "../domain/bible/types";
 import {
 	markChapterComplete,
@@ -20,12 +20,13 @@ import { ActionNotice } from "../components/ActionNotice";
 import type { UndoNotice } from "../components/ActionNotice";
 import { AppHeader } from "../components/AppHeader";
 import { ConfirmDialog } from "../components/ConfirmDialog";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import { PlanSummary } from "../components/PlanSummary";
 import { PrimaryNavigation } from "../components/PrimaryNavigation";
-import { ScheduleList, UpcomingList } from "../features/schedule/ScheduleList";
-import { ChapterList } from "../features/today/ChapterList";
 import { CompletedView } from "../features/completed/CompletedView";
+import { EditPlanView } from "../features/plan-editor/EditPlanView";
+import { ScheduleView } from "../features/schedule/ScheduleView";
+import { TodayView } from "../features/today/TodayView";
 import { PlanForm } from "../features/plan-editor/PlanForm";
 import { BackupRestoreControl } from "../features/settings/BackupRestoreControl";
 import { SettingsPanel } from "../features/settings/SettingsPanel";
@@ -69,7 +70,7 @@ export function App({
 	const headingRef = useRef<HTMLHeadingElement>(null);
 	const navigated = useRef(false);
 	const hasPlan = Boolean(appState.plan);
-	const { view, navigate, reset } = useAppNavigation(hasPlan, (next) => {
+	const { view, navigate, reset, continuePendingNavigation } = useAppNavigation(hasPlan, (next) => {
 		if (effectiveView !== "edit-plan" || !editDirty) return true;
 		setDiscardTarget(next === "setup" ? "today" : next);
 		return false;
@@ -242,12 +243,7 @@ export function App({
 	}
 
 	function printPlan() {
-		printReturnView.current =
-			effectiveView === "settings"
-				? lastPrimaryView
-				: effectiveView === "setup"
-					? "today"
-					: effectiveView;
+		printReturnView.current = effectiveView === "setup" ? "today" : effectiveView;
 		setPrintRequested(true);
 		navigate("schedule");
 	}
@@ -262,7 +258,7 @@ export function App({
 		}));
 		if (checked && effectiveView === "schedule" && !todayAssignment?.chapters.includes(chapter))
 			setUndoNotice({ chapter });
-		else if (!checked) setActionMessage(`${chapter} removido dos concluídos.`);
+		else if (!checked) setActionMessage(`${formatReferences([chapter])} removido dos concluídos.`);
 	}
 
 	function undoChapter() {
@@ -340,78 +336,27 @@ export function App({
 						<PlanSummary plan={appState.plan} progress={summary} />
 					)}
 					{effectiveView === "today" && (
-						<>
-							{computedSchedule?.status === "completed" ? (
-								<section className="card state-card">
-									<h1 tabIndex={-1} ref={headingRef}>
-										Parabéns! Você terminou sua leitura.
-									</h1>
-								</section>
-							) : computedSchedule?.status === "expired" ? (
-								<section className="card state-card">
-									<h1 tabIndex={-1} ref={headingRef}>
-										Prazo encerrado
-									</h1>
-									<p>Seu prazo terminou com capítulos pendentes.</p>
-									<button className="button button-primary" onClick={openEditPlan} type="button">
-										Alterar data final
-									</button>
-								</section>
-							) : (
-								<section className="card today-card" aria-labelledby="today-heading">
-									<div className="section-heading">
-										<div>
-											<p className="eyebrow">Leitura de hoje</p>
-											<h1 id="today-heading" tabIndex={-1} ref={headingRef}>
-												{formatLocalDate(today, { weekday: "long", day: "2-digit", month: "long" })}
-											</h1>
-										</div>
-										<span className="today-date">HOJE</span>
-									</div>
-									{todayAssignment?.chapters.length ? (
-										<ChapterList
-											chapters={todayAssignment.chapters}
-											completed={completedSet}
-											onToggle={toggleChapter}
-										/>
-									) : (
-										<p className="muted">
-											Não há leitura prevista para hoje. Seu próximo dia de leitura aparece abaixo.
-										</p>
-									)}
-								</section>
-							)}
-							<section className="card upcoming-card" aria-labelledby="upcoming-heading">
-								<div className="section-heading">
-									<h2 id="upcoming-heading">Próximas leituras</h2>
-									<button className="button" type="button" onClick={() => go("schedule")}>
-										Ver plano
-									</button>
-								</div>
-								<UpcomingList assignments={displaySchedule?.assignments ?? []} today={today} />
-							</section>
-						</>
+						<TodayView
+							today={today}
+							status={computedSchedule?.status}
+							assignment={todayAssignment}
+							schedule={displaySchedule}
+							completed={completedSet}
+							onToggle={toggleChapter}
+							onOpenPlan={() => go("schedule")}
+							onEditPlan={openEditPlan}
+							headingRef={headingRef}
+						/>
 					)}
 					{effectiveView === "schedule" && (
-						<section className="card schedule-card" aria-labelledby="schedule-heading">
-							<div className="section-heading">
-								<div>
-									<p className="eyebrow">Cronograma recalculado</p>
-									<h1 id="schedule-heading" tabIndex={-1} ref={headingRef}>
-										Plano
-									</h1>
-								</div>
-								<span className="muted">
-									{listDates(today, appState.plan.targetDate).length} dias restantes
-								</span>
-							</div>
-							<ScheduleList
-								assignments={displaySchedule?.assignments ?? []}
-								today={today}
-								completed={completedSet}
-								onToggle={toggleChapter}
-							/>
-						</section>
+						<ScheduleView
+							plan={appState.plan}
+							schedule={displaySchedule}
+							today={today}
+							completed={completedSet}
+							onToggle={toggleChapter}
+							headingRef={headingRef}
+						/>
 					)}
 					{effectiveView === "completed" && (
 						<CompletedView
@@ -456,27 +401,18 @@ export function App({
 						/>
 					)}
 					{effectiveView === "edit-plan" && (
-						<section className="card setup-card edit-plan-card">
-							<p className="eyebrow">Configurações do plano</p>
-							<h1 className="plan-title" tabIndex={-1} ref={headingRef}>
-								Editar plano
-							</h1>
-							<p className="muted setup-intro">
-								Atualize o intervalo de capítulos e as datas do seu plano.
-							</p>
-							<PlanForm
-								key={`${appState.plan.startReference}:${appState.plan.endReference}:${appState.plan.startDate}:${appState.plan.targetDate}`}
-								initialPlan={appState.plan}
-								startDate={today}
-								targetDate={defaultTargetDate}
-								onSubmit={savePlan}
-								onCancel={() => {
-									setEditDirty(false);
-									navigate(editReturnView);
-								}}
-								onDirtyChange={setEditDirty}
-							/>
-						</section>
+						<EditPlanView
+							plan={appState.plan}
+							today={today}
+							targetDate={defaultTargetDate}
+							onSubmit={savePlan}
+							onCancel={() => {
+								setEditDirty(false);
+								navigate(editReturnView);
+							}}
+							onDirtyChange={setEditDirty}
+							headingRef={headingRef}
+						/>
 					)}
 				</main>
 			) : null}
@@ -491,7 +427,7 @@ export function App({
 				onConfirm={() => {
 					if (discardTarget) {
 						setEditDirty(false);
-						navigate(discardTarget);
+						if (!continuePendingNavigation()) navigate(discardTarget);
 					}
 					setDiscardTarget(null);
 				}}
@@ -500,7 +436,7 @@ export function App({
 				<div className="action-message" role="status" aria-live="polite">
 					<span>{actionMessage}</span>
 					<button type="button" aria-label="Fechar aviso" onClick={() => setActionMessage(null)}>
-						<CloseIcon aria-hidden="true" fontSize="small" />
+						<X size={18} strokeWidth={1.8} aria-hidden="true" />
 					</button>
 				</div>
 			)}

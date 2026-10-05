@@ -1,14 +1,13 @@
-import { useState } from "react";
-import BrightnessAutoIcon from "@mui/icons-material/BrightnessAuto";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import { Monitor, Moon, Settings, Sun } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { appConfig } from "../config/app";
-import SettingsIcon from "@mui/icons-material/Settings";
 import type { ThemePreference } from "../storage/state";
+
+const themeOptions = [
+	{ value: "system", label: "Sistema", Icon: Monitor },
+	{ value: "dark", label: "Escuro", Icon: Moon },
+	{ value: "light", label: "Claro", Icon: Sun },
+] as const;
 
 export function AppHeader({
 	theme,
@@ -21,13 +20,26 @@ export function AppHeader({
 	onSettings?: () => void;
 	onHome?: () => void;
 }) {
-	const [themeMenuAnchor, setThemeMenuAnchor] = useState<HTMLElement | null>(null);
-	const themeOptions = [
-		{ value: "system", label: "Sistema", icon: <BrightnessAutoIcon fontSize="small" /> },
-		{ value: "dark", label: "Escuro", icon: <DarkModeIcon fontSize="small" /> },
-		{ value: "light", label: "Claro", icon: <LightModeIcon fontSize="small" /> },
-	] as const;
+	const [menuOpen, setMenuOpen] = useState(false);
+	const menuRef = useRef<HTMLDivElement>(null);
 	const selectedTheme = themeOptions.find((option) => option.value === theme)!;
+	const SelectedIcon = selectedTheme.Icon;
+
+	useEffect(() => {
+		if (!menuOpen) return;
+		const closeOnOutsideClick = (event: MouseEvent) => {
+			if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false);
+		};
+		const closeOnEscape = (event: KeyboardEvent) => {
+			if (event.key === "Escape") setMenuOpen(false);
+		};
+		window.addEventListener("mousedown", closeOnOutsideClick);
+		window.addEventListener("keydown", closeOnEscape);
+		return () => {
+			window.removeEventListener("mousedown", closeOnOutsideClick);
+			window.removeEventListener("keydown", closeOnEscape);
+		};
+	}, [menuOpen]);
 
 	return (
 		<header className="app-header">
@@ -53,37 +65,39 @@ export function AppHeader({
 				/>
 			</a>
 			<div className="header-actions">
-				<button
-					className="icon-button"
-					type="button"
-					aria-label={`Tema: ${selectedTheme.label}`}
-					aria-haspopup="menu"
-					aria-expanded={Boolean(themeMenuAnchor)}
-					title={`Tema: ${selectedTheme.label}`}
-					onClick={(event) => setThemeMenuAnchor(event.currentTarget)}
-				>
-					{selectedTheme.icon}
-				</button>
-				<Menu
-					anchorEl={themeMenuAnchor}
-					open={Boolean(themeMenuAnchor)}
-					onClose={() => setThemeMenuAnchor(null)}
-					slotProps={{ list: { "aria-label": "Selecionar tema" } }}
-				>
-					{themeOptions.map((option) => (
-						<MenuItem
-							key={option.value}
-							selected={theme === option.value}
-							onClick={() => {
-								onThemeChange(option.value as ThemePreference);
-								setThemeMenuAnchor(null);
-							}}
-						>
-							<ListItemIcon>{option.icon}</ListItemIcon>
-							<ListItemText>{option.label}</ListItemText>
-						</MenuItem>
-					))}
-				</Menu>
+				<div className="theme-menu" ref={menuRef}>
+					<button
+						className="icon-button"
+						type="button"
+						aria-label={`Tema: ${selectedTheme.label}`}
+						aria-haspopup="true"
+						aria-expanded={menuOpen}
+						title={`Tema: ${selectedTheme.label}`}
+						onClick={() => setMenuOpen((open) => !open)}
+					>
+						<SelectedIcon size={18} strokeWidth={1.8} aria-hidden="true" />
+					</button>
+					{menuOpen && (
+						<div className="theme-menu-popup" aria-label="Selecionar tema">
+							{themeOptions.map(({ value, label, Icon }) => (
+								<button
+									key={value}
+									type="button"
+									className={
+										theme === value ? "theme-menu-option is-selected" : "theme-menu-option"
+									}
+									onClick={() => {
+										onThemeChange(value);
+										setMenuOpen(false);
+									}}
+								>
+									<Icon size={18} strokeWidth={1.8} aria-hidden="true" />
+									{label}
+								</button>
+							))}
+						</div>
+					)}
+				</div>
 				{onSettings && (
 					<button
 						className="icon-button"
@@ -91,7 +105,7 @@ export function AppHeader({
 						onClick={onSettings}
 						aria-label="Configurações"
 					>
-						<SettingsIcon aria-hidden="true" fontSize="small" />
+						<Settings size={18} strokeWidth={1.8} aria-hidden="true" />
 					</button>
 				)}
 			</div>
