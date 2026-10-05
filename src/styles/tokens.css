@@ -1,0 +1,45 @@
+:root {
+	font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	font-optical-sizing: auto;
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-6: 1.5rem;
+	--space-8: 2rem;
+	--radius-sm: 0.45rem;
+	--radius-md: 0.8rem;
+	--radius-lg: 1.2rem;
+	--font-mono: "SFMono-Regular", Consolas, monospace;
+}
+
+:root,
+:root[data-theme="dark"] {
+	color-scheme: dark;
+	--color-background: #1d2021;
+	--color-surface: #282828;
+	--color-surface-muted: #32302f;
+	--color-border: #504945;
+	--color-text: #ebdbb2;
+	--color-text-muted: #a89984;
+	--color-primary: #fabd2f;
+	--color-success: #b8bb26;
+	--color-warning: #fe8019;
+	--color-danger: #fb4934;
+}
+
+:root[data-theme="light"] {
+	color-scheme: light;
+	--color-background: #fbf1c7;
+	--color-surface: #f9f5d7;
+	--color-surface-muted: #f2e5bc;
+	--color-border: #d5c4a1;
+	--color-text: #3c3836;
+	--color-text-muted: #7c6f64;
+	--color-primary: #b57614;
+	--color-success: #79740e;
+	--color-warning: #af3a03;
+	--color-danger: #9d0006;
+}
