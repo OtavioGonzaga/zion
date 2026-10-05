@@ -6,13 +6,13 @@ test("creates and persists a reading plan", async ({ page }) => {
 
 	await page.getByLabel("Livro inicial").selectOption({ label: "Jeremias" });
 	await page.getByLabel("Capítulo inicial").selectOption("6");
-	await page.getByLabel("Livro final").selectOption({ label: "Apocalipse" });
+	await page.getByLabel("Livro final").selectOption({ label: "Jeremias" });
 	await page.getByLabel("Capítulo final").selectOption("22");
 	await page.getByRole("button", { name: "Criar plano" }).click();
 
-	await expect(page.getByRole("heading", { name: "Jeremias 6, Apocalipse 22" })).toBeVisible();
+	await expect(page.getByRole("heading", { name: "Jeremias 6–22" })).toBeVisible();
 	await page.reload();
-	await expect(page.getByRole("heading", { name: "Jeremias 6, Apocalipse 22" })).toBeVisible();
+	await expect(page.getByRole("heading", { name: "Jeremias 6–22" })).toBeVisible();
 });
 
 test("validates a reversed chapter range and remains usable on mobile", async ({ page }) => {
@@ -26,4 +26,36 @@ test("validates a reversed chapter range and remains usable on mobile", async ({
 
 	await expect(page.getByRole("alert")).toContainText("capítulo final");
 	await expect(page.getByLabel("Livro inicial")).toBeVisible();
+});
+
+test("keeps today's assignment frozen while future progress adapts the schedule", async ({
+	page,
+}) => {
+	await page.goto("/");
+	await page.getByLabel("Livro inicial").selectOption({ label: "Jeremias" });
+	await page.getByLabel("Capítulo inicial").selectOption("6");
+	await page.getByLabel("Livro final").selectOption({ label: "Jeremias" });
+	await page.getByLabel("Capítulo final").selectOption("22");
+	const now = new Date();
+	const localDate = (date: Date) =>
+		`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+	const lastDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 4);
+	await page.getByLabel("Data inicial").fill(localDate(now));
+	await page.getByLabel("Data final").fill(localDate(lastDay));
+	await page.getByRole("button", { name: "Criar plano" }).click();
+
+	const todayChapter = page.getByRole("checkbox", { name: "Jeremias 6" });
+	await expect(todayChapter).toBeVisible();
+	await todayChapter.check();
+	await expect(todayChapter).toBeChecked();
+	await page.getByRole("button", { name: "Ver plano completo" }).click();
+	const futureChapter = page.getByRole("checkbox", { name: "Jeremias 7" });
+	await expect(futureChapter).toBeVisible();
+	await futureChapter.click();
+	await expect(page.getByText("2 de 17 capítulos")).toBeVisible();
+	await page.getByRole("button", { name: "Ver hoje" }).click();
+	await expect(todayChapter).toBeChecked();
+	await expect(page.getByRole("heading", { name: "Jeremias 6–22" })).toBeVisible();
+	await page.reload();
+	await expect(page.getByRole("checkbox", { name: "Jeremias 6" })).toBeChecked();
 });

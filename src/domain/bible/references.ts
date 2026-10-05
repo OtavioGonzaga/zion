@@ -1,5 +1,5 @@
 import { bibleBooks } from "../../data/bible-books";
-import { compareChapterRefs, getBook } from "./bible";
+import { compareChapterRefs, getBook, getChapterRange } from "./bible";
 import type { ChapterRef } from "./types";
 
 export function formatReferences(references: ChapterRef[]): string {
@@ -34,4 +34,18 @@ export function getBookOptions() {
 
 export function getReferenceBookName(reference: ChapterRef): string {
 	return getBook(reference.split(".")[0]!)?.name ?? "";
+}
+
+export function formatReferenceRange(start: ChapterRef, end: ChapterRef): string {
+	const range = getChapterRange(start, end);
+	if (range.length === 0) return "";
+	const first = range[0]!;
+	const last = range.at(-1)!;
+	const [firstBook, firstChapter] = first.split(".");
+	const [lastBook, lastChapter] = last.split(".");
+	if (firstBook === lastBook) {
+		const name = getBook(firstBook!)?.name ?? firstBook!;
+		return `${name} ${firstChapter}${firstChapter === lastChapter ? "" : `–${lastChapter}`}`;
+	}
+	return `${formatReferences([first])} – ${formatReferences([last])}`;
 }
