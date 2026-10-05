@@ -44,10 +44,6 @@ export function App() {
 			})
 		: null;
 	const projectedToday = computedSchedule ? findAssignment(computedSchedule, today) : undefined;
-	const frozenToday: DailyAssignment | undefined =
-		appState.dailyAssignment?.date === today
-			? { ...appState.dailyAssignment, blocks: [], weight: 0 }
-			: projectedToday;
 	const summary = appState.plan ? getPlanProgress(appState.plan, appState.progress) : null;
 	const completedSet = new Set(appState.progress.map((item) => item.chapter));
 
@@ -64,15 +60,6 @@ export function App() {
 		media.addEventListener("change", updateTheme);
 		return () => media.removeEventListener("change", updateTheme);
 	}, [appState.preferences.theme]);
-
-	useEffect(() => {
-		if (projectedToday && appState.dailyAssignment?.date !== today) {
-			setAppState((state) => ({
-				...state,
-				dailyAssignment: { date: today, chapters: projectedToday.chapters, blocks: [], weight: 0 },
-			}));
-		}
-	}, [projectedToday, appState.dailyAssignment?.date, today]);
 
 	useEffect(() => {
 		if (!printRequested || !showSchedule) return;
@@ -216,7 +203,7 @@ export function App() {
 					<SettingsPanel
 						state={appState}
 						schedule={computedSchedule}
-						todayAssignment={frozenToday}
+						todayAssignment={projectedToday}
 						onRestore={(state) => {
 							setAppState(state);
 							applyTheme(state.preferences.theme);
@@ -294,9 +281,9 @@ export function App() {
 								</div>
 								<span className="today-date">HOJE</span>
 							</div>
-							{frozenToday?.chapters.length ? (
+							{projectedToday?.chapters.length ? (
 								<ChapterList
-									chapters={frozenToday.chapters}
+									chapters={projectedToday.chapters}
 									completed={completedSet}
 									onToggle={toggleChapter}
 								/>
