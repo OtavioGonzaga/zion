@@ -1,0 +1,2204 @@
+[
+	{
+		"id": "block-001",
+		"order": 1,
+		"chapters": ["GEN.1", "GEN.2", "GEN.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-002",
+		"order": 2,
+		"chapters": ["GEN.4", "GEN.5", "GEN.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-003",
+		"order": 3,
+		"chapters": ["GEN.7", "GEN.8", "GEN.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-004",
+		"order": 4,
+		"chapters": ["GEN.10", "GEN.11", "GEN.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-005",
+		"order": 5,
+		"chapters": ["GEN.13", "GEN.14", "GEN.15", "GEN.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-006",
+		"order": 6,
+		"chapters": ["GEN.17", "GEN.18", "GEN.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-007",
+		"order": 7,
+		"chapters": ["GEN.20", "GEN.21", "GEN.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-008",
+		"order": 8,
+		"chapters": ["GEN.23", "GEN.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-009",
+		"order": 9,
+		"chapters": ["GEN.25", "GEN.26", "GEN.27"],
+		"weight": 1
+	},
+	{
+		"id": "block-010",
+		"order": 10,
+		"chapters": ["GEN.28", "GEN.29", "GEN.30"],
+		"weight": 1
+	},
+	{
+		"id": "block-011",
+		"order": 11,
+		"chapters": ["GEN.31", "GEN.32"],
+		"weight": 1
+	},
+	{
+		"id": "block-012",
+		"order": 12,
+		"chapters": ["GEN.33", "GEN.34", "GEN.35"],
+		"weight": 1
+	},
+	{
+		"id": "block-013",
+		"order": 13,
+		"chapters": ["GEN.36", "GEN.37"],
+		"weight": 1
+	},
+	{
+		"id": "block-014",
+		"order": 14,
+		"chapters": ["GEN.38", "GEN.39", "GEN.40"],
+		"weight": 1
+	},
+	{
+		"id": "block-015",
+		"order": 15,
+		"chapters": ["GEN.41", "GEN.42"],
+		"weight": 1
+	},
+	{
+		"id": "block-016",
+		"order": 16,
+		"chapters": ["GEN.43", "GEN.44", "GEN.45"],
+		"weight": 1
+	},
+	{
+		"id": "block-017",
+		"order": 17,
+		"chapters": ["GEN.46", "GEN.47"],
+		"weight": 1
+	},
+	{
+		"id": "block-018",
+		"order": 18,
+		"chapters": ["GEN.48", "GEN.49", "GEN.50"],
+		"weight": 1
+	},
+	{
+		"id": "block-019",
+		"order": 19,
+		"chapters": ["EXO.1", "EXO.2", "EXO.3", "EXO.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-020",
+		"order": 20,
+		"chapters": ["EXO.5", "EXO.6", "EXO.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-021",
+		"order": 21,
+		"chapters": ["EXO.8", "EXO.9", "EXO.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-022",
+		"order": 22,
+		"chapters": ["EXO.11", "EXO.12", "EXO.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-023",
+		"order": 23,
+		"chapters": ["EXO.14", "EXO.15", "EXO.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-024",
+		"order": 24,
+		"chapters": ["EXO.17", "EXO.18", "EXO.19", "EXO.20"],
+		"weight": 1
+	},
+	{
+		"id": "block-025",
+		"order": 25,
+		"chapters": ["EXO.21", "EXO.22", "EXO.23"],
+		"weight": 1
+	},
+	{
+		"id": "block-026",
+		"order": 26,
+		"chapters": ["EXO.24", "EXO.25", "EXO.26"],
+		"weight": 1
+	},
+	{
+		"id": "block-027",
+		"order": 27,
+		"chapters": ["EXO.27", "EXO.28", "EXO.29"],
+		"weight": 1
+	},
+	{
+		"id": "block-028",
+		"order": 28,
+		"chapters": ["EXO.30", "EXO.31", "EXO.32"],
+		"weight": 1
+	},
+	{
+		"id": "block-029",
+		"order": 29,
+		"chapters": ["EXO.33", "EXO.34", "EXO.35"],
+		"weight": 1
+	},
+	{
+		"id": "block-030",
+		"order": 30,
+		"chapters": ["EXO.36", "EXO.37", "EXO.38"],
+		"weight": 1
+	},
+	{
+		"id": "block-031",
+		"order": 31,
+		"chapters": ["EXO.39", "EXO.40"],
+		"weight": 1
+	},
+	{
+		"id": "block-032",
+		"order": 32,
+		"chapters": ["LEV.1", "LEV.2", "LEV.3", "LEV.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-033",
+		"order": 33,
+		"chapters": ["LEV.5", "LEV.6", "LEV.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-034",
+		"order": 34,
+		"chapters": ["LEV.8", "LEV.9", "LEV.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-035",
+		"order": 35,
+		"chapters": ["LEV.11", "LEV.12", "LEV.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-036",
+		"order": 36,
+		"chapters": ["LEV.14", "LEV.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-037",
+		"order": 37,
+		"chapters": ["LEV.16", "LEV.17", "LEV.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-038",
+		"order": 38,
+		"chapters": ["LEV.19", "LEV.20", "LEV.21"],
+		"weight": 1
+	},
+	{
+		"id": "block-039",
+		"order": 39,
+		"chapters": ["LEV.22", "LEV.23"],
+		"weight": 1
+	},
+	{
+		"id": "block-040",
+		"order": 40,
+		"chapters": ["LEV.24", "LEV.25"],
+		"weight": 1
+	},
+	{
+		"id": "block-041",
+		"order": 41,
+		"chapters": ["LEV.26", "LEV.27"],
+		"weight": 1
+	},
+	{
+		"id": "block-042",
+		"order": 42,
+		"chapters": ["NUM.1", "NUM.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-043",
+		"order": 43,
+		"chapters": ["NUM.3", "NUM.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-044",
+		"order": 44,
+		"chapters": ["NUM.5", "NUM.6", "NUM.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-045",
+		"order": 45,
+		"chapters": ["NUM.8", "NUM.9", "NUM.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-046",
+		"order": 46,
+		"chapters": ["NUM.11", "NUM.12", "NUM.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-047",
+		"order": 47,
+		"chapters": ["NUM.14", "NUM.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-048",
+		"order": 48,
+		"chapters": ["NUM.16", "NUM.17", "NUM.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-049",
+		"order": 49,
+		"chapters": ["NUM.19", "NUM.20", "NUM.21"],
+		"weight": 1
+	},
+	{
+		"id": "block-050",
+		"order": 50,
+		"chapters": ["NUM.22", "NUM.23", "NUM.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-051",
+		"order": 51,
+		"chapters": ["NUM.25", "NUM.26"],
+		"weight": 1
+	},
+	{
+		"id": "block-052",
+		"order": 52,
+		"chapters": ["NUM.27", "NUM.28", "NUM.29"],
+		"weight": 1
+	},
+	{
+		"id": "block-053",
+		"order": 53,
+		"chapters": ["NUM.30", "NUM.31", "NUM.32"],
+		"weight": 1
+	},
+	{
+		"id": "block-054",
+		"order": 54,
+		"chapters": ["NUM.33", "NUM.34"],
+		"weight": 1
+	},
+	{
+		"id": "block-055",
+		"order": 55,
+		"chapters": ["NUM.35", "NUM.36"],
+		"weight": 1
+	},
+	{
+		"id": "block-056",
+		"order": 56,
+		"chapters": ["DEU.1", "DEU.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-057",
+		"order": 57,
+		"chapters": ["DEU.3", "DEU.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-058",
+		"order": 58,
+		"chapters": ["DEU.5", "DEU.6", "DEU.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-059",
+		"order": 59,
+		"chapters": ["DEU.8", "DEU.9", "DEU.10", "DEU.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-060",
+		"order": 60,
+		"chapters": ["DEU.12", "DEU.13", "DEU.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-061",
+		"order": 61,
+		"chapters": ["DEU.15", "DEU.16", "DEU.17", "DEU.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-062",
+		"order": 62,
+		"chapters": ["DEU.19", "DEU.20", "DEU.21", "DEU.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-063",
+		"order": 63,
+		"chapters": ["DEU.23", "DEU.24", "DEU.25", "DEU.26"],
+		"weight": 1
+	},
+	{
+		"id": "block-064",
+		"order": 64,
+		"chapters": ["DEU.27", "DEU.28"],
+		"weight": 1
+	},
+	{
+		"id": "block-065",
+		"order": 65,
+		"chapters": ["DEU.29", "DEU.30", "DEU.31"],
+		"weight": 1
+	},
+	{
+		"id": "block-066",
+		"order": 66,
+		"chapters": ["DEU.32", "DEU.33", "DEU.34"],
+		"weight": 1
+	},
+	{
+		"id": "block-067",
+		"order": 67,
+		"chapters": ["JOS.1", "JOS.2", "JOS.3", "JOS.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-068",
+		"order": 68,
+		"chapters": ["JOS.5", "JOS.6", "JOS.7", "JOS.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-069",
+		"order": 69,
+		"chapters": ["JOS.9", "JOS.10", "JOS.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-070",
+		"order": 70,
+		"chapters": ["JOS.12", "JOS.13", "JOS.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-071",
+		"order": 71,
+		"chapters": ["JOS.15", "JOS.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-072",
+		"order": 72,
+		"chapters": ["JOS.17", "JOS.18", "JOS.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-073",
+		"order": 73,
+		"chapters": ["JOS.20", "JOS.21", "JOS.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-074",
+		"order": 74,
+		"chapters": ["JOS.23", "JOS.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-075",
+		"order": 75,
+		"chapters": ["JDG.1", "JDG.2", "JDG.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-076",
+		"order": 76,
+		"chapters": ["JDG.4", "JDG.5", "JDG.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-077",
+		"order": 77,
+		"chapters": ["JDG.7", "JDG.8", "JDG.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-078",
+		"order": 78,
+		"chapters": ["JDG.10", "JDG.11", "JDG.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-079",
+		"order": 79,
+		"chapters": ["JDG.13", "JDG.14", "JDG.15", "JDG.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-080",
+		"order": 80,
+		"chapters": ["JDG.17", "JDG.18", "JDG.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-081",
+		"order": 81,
+		"chapters": ["JDG.20", "JDG.21"],
+		"weight": 1
+	},
+	{
+		"id": "block-082",
+		"order": 82,
+		"chapters": ["RUT.1", "RUT.2", "RUT.3", "RUT.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-083",
+		"order": 83,
+		"chapters": ["1SA.1", "1SA.2", "1SA.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-084",
+		"order": 84,
+		"chapters": ["1SA.4", "1SA.5", "1SA.6", "1SA.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-085",
+		"order": 85,
+		"chapters": ["1SA.8", "1SA.9", "1SA.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-086",
+		"order": 86,
+		"chapters": ["1SA.11", "1SA.12", "1SA.13", "1SA.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-087",
+		"order": 87,
+		"chapters": ["1SA.15", "1SA.16", "1SA.17"],
+		"weight": 1
+	},
+	{
+		"id": "block-088",
+		"order": 88,
+		"chapters": ["1SA.18", "1SA.19", "1SA.20"],
+		"weight": 1
+	},
+	{
+		"id": "block-089",
+		"order": 89,
+		"chapters": ["1SA.21", "1SA.22", "1SA.23", "1SA.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-090",
+		"order": 90,
+		"chapters": ["1SA.25", "1SA.26", "1SA.27"],
+		"weight": 1
+	},
+	{
+		"id": "block-091",
+		"order": 91,
+		"chapters": ["1SA.28", "1SA.29", "1SA.30", "1SA.31"],
+		"weight": 1
+	},
+	{
+		"id": "block-092",
+		"order": 92,
+		"chapters": ["2SA.1", "2SA.2", "2SA.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-093",
+		"order": 93,
+		"chapters": ["2SA.4", "2SA.5", "2SA.6", "2SA.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-094",
+		"order": 94,
+		"chapters": ["2SA.8", "2SA.9", "2SA.10", "2SA.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-095",
+		"order": 95,
+		"chapters": ["2SA.12", "2SA.13", "2SA.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-096",
+		"order": 96,
+		"chapters": ["2SA.15", "2SA.16", "2SA.17"],
+		"weight": 1
+	},
+	{
+		"id": "block-097",
+		"order": 97,
+		"chapters": ["2SA.18", "2SA.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-098",
+		"order": 98,
+		"chapters": ["2SA.20", "2SA.21", "2SA.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-099",
+		"order": 99,
+		"chapters": ["2SA.23", "2SA.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-100",
+		"order": 100,
+		"chapters": ["1KI.1", "1KI.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-101",
+		"order": 101,
+		"chapters": ["1KI.3", "1KI.4", "1KI.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-102",
+		"order": 102,
+		"chapters": ["1KI.6", "1KI.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-103",
+		"order": 103,
+		"chapters": ["1KI.8", "1KI.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-104",
+		"order": 104,
+		"chapters": ["1KI.10", "1KI.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-105",
+		"order": 105,
+		"chapters": ["1KI.12", "1KI.13", "1KI.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-106",
+		"order": 106,
+		"chapters": ["1KI.15", "1KI.16", "1KI.17"],
+		"weight": 1
+	},
+	{
+		"id": "block-107",
+		"order": 107,
+		"chapters": ["1KI.18", "1KI.19", "1KI.20"],
+		"weight": 1
+	},
+	{
+		"id": "block-108",
+		"order": 108,
+		"chapters": ["1KI.21", "1KI.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-109",
+		"order": 109,
+		"chapters": ["2KI.1", "2KI.2", "2KI.3", "2KI.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-110",
+		"order": 110,
+		"chapters": ["2KI.5", "2KI.6", "2KI.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-111",
+		"order": 111,
+		"chapters": ["2KI.8", "2KI.9", "2KI.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-112",
+		"order": 112,
+		"chapters": ["2KI.11", "2KI.12", "2KI.13", "2KI.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-113",
+		"order": 113,
+		"chapters": ["2KI.15", "2KI.16", "2KI.17"],
+		"weight": 1
+	},
+	{
+		"id": "block-114",
+		"order": 114,
+		"chapters": ["2KI.18", "2KI.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-115",
+		"order": 115,
+		"chapters": ["2KI.20", "2KI.21", "2KI.22", "2KI.23"],
+		"weight": 1
+	},
+	{
+		"id": "block-116",
+		"order": 116,
+		"chapters": ["2KI.24", "2KI.25"],
+		"weight": 1
+	},
+	{
+		"id": "block-117",
+		"order": 117,
+		"chapters": ["1CH.1", "1CH.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-118",
+		"order": 118,
+		"chapters": ["1CH.3", "1CH.4", "1CH.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-119",
+		"order": 119,
+		"chapters": ["1CH.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-120",
+		"order": 120,
+		"chapters": ["1CH.7", "1CH.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-121",
+		"order": 121,
+		"chapters": ["1CH.9", "1CH.10", "1CH.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-122",
+		"order": 122,
+		"chapters": ["1CH.12", "1CH.13", "1CH.14", "1CH.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-123",
+		"order": 123,
+		"chapters": ["1CH.16", "1CH.17", "1CH.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-124",
+		"order": 124,
+		"chapters": ["1CH.19", "1CH.20", "1CH.21", "1CH.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-125",
+		"order": 125,
+		"chapters": ["1CH.23", "1CH.24", "1CH.25"],
+		"weight": 1
+	},
+	{
+		"id": "block-126",
+		"order": 126,
+		"chapters": ["1CH.26", "1CH.27", "1CH.28", "1CH.29"],
+		"weight": 1
+	},
+	{
+		"id": "block-127",
+		"order": 127,
+		"chapters": ["2CH.1", "2CH.2", "2CH.3", "2CH.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-128",
+		"order": 128,
+		"chapters": ["2CH.5", "2CH.6", "2CH.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-129",
+		"order": 129,
+		"chapters": ["2CH.8", "2CH.9", "2CH.10", "2CH.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-130",
+		"order": 130,
+		"chapters": ["2CH.12", "2CH.13", "2CH.14", "2CH.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-131",
+		"order": 131,
+		"chapters": ["2CH.16", "2CH.17", "2CH.18", "2CH.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-132",
+		"order": 132,
+		"chapters": ["2CH.20", "2CH.21", "2CH.22", "2CH.23"],
+		"weight": 1
+	},
+	{
+		"id": "block-133",
+		"order": 133,
+		"chapters": ["2CH.24", "2CH.25", "2CH.26"],
+		"weight": 1
+	},
+	{
+		"id": "block-134",
+		"order": 134,
+		"chapters": ["2CH.27", "2CH.28", "2CH.29"],
+		"weight": 1
+	},
+	{
+		"id": "block-135",
+		"order": 135,
+		"chapters": ["2CH.30", "2CH.31", "2CH.32"],
+		"weight": 1
+	},
+	{
+		"id": "block-136",
+		"order": 136,
+		"chapters": ["2CH.33", "2CH.34", "2CH.35", "2CH.36"],
+		"weight": 1
+	},
+	{
+		"id": "block-137",
+		"order": 137,
+		"chapters": ["EZR.1", "EZR.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-138",
+		"order": 138,
+		"chapters": ["EZR.3", "EZR.4", "EZR.5", "EZR.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-139",
+		"order": 139,
+		"chapters": ["EZR.7", "EZR.8", "EZR.9", "EZR.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-140",
+		"order": 140,
+		"chapters": ["NEH.1", "NEH.2", "NEH.3", "NEH.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-141",
+		"order": 141,
+		"chapters": ["NEH.5", "NEH.6", "NEH.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-142",
+		"order": 142,
+		"chapters": ["NEH.8", "NEH.9", "NEH.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-143",
+		"order": 143,
+		"chapters": ["NEH.11", "NEH.12", "NEH.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-144",
+		"order": 144,
+		"chapters": ["EST.1", "EST.2", "EST.3", "EST.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-145",
+		"order": 145,
+		"chapters": ["EST.5", "EST.6", "EST.7", "EST.8", "EST.9", "EST.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-146",
+		"order": 146,
+		"chapters": ["JOB.1", "JOB.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-147",
+		"order": 147,
+		"chapters": ["JOB.3", "JOB.4", "JOB.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-148",
+		"order": 148,
+		"chapters": ["JOB.6", "JOB.7", "JOB.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-149",
+		"order": 149,
+		"chapters": ["JOB.9", "JOB.10", "JOB.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-150",
+		"order": 150,
+		"chapters": ["JOB.12", "JOB.13", "JOB.14", "JOB.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-151",
+		"order": 151,
+		"chapters": ["JOB.16", "JOB.17", "JOB.18", "JOB.19", "JOB.20"],
+		"weight": 1
+	},
+	{
+		"id": "block-152",
+		"order": 152,
+		"chapters": ["JOB.21", "JOB.22", "JOB.23", "JOB.24", "JOB.25"],
+		"weight": 1
+	},
+	{
+		"id": "block-153",
+		"order": 153,
+		"chapters": ["JOB.26", "JOB.27", "JOB.28"],
+		"weight": 1
+	},
+	{
+		"id": "block-154",
+		"order": 154,
+		"chapters": ["JOB.29", "JOB.30", "JOB.31"],
+		"weight": 1
+	},
+	{
+		"id": "block-155",
+		"order": 155,
+		"chapters": ["JOB.32", "JOB.33", "JOB.34"],
+		"weight": 1
+	},
+	{
+		"id": "block-156",
+		"order": 156,
+		"chapters": ["JOB.35", "JOB.36", "JOB.37"],
+		"weight": 1
+	},
+	{
+		"id": "block-157",
+		"order": 157,
+		"chapters": ["JOB.38", "JOB.39", "JOB.40"],
+		"weight": 1
+	},
+	{
+		"id": "block-158",
+		"order": 158,
+		"chapters": ["JOB.41", "JOB.42"],
+		"weight": 1
+	},
+	{
+		"id": "block-159",
+		"order": 159,
+		"chapters": ["PSA.1", "PSA.2", "PSA.3", "PSA.4", "PSA.5", "PSA.6", "PSA.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-160",
+		"order": 160,
+		"chapters": ["PSA.8", "PSA.9", "PSA.10", "PSA.11", "PSA.12", "PSA.13", "PSA.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-161",
+		"order": 161,
+		"chapters": ["PSA.15", "PSA.16", "PSA.17", "PSA.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-162",
+		"order": 162,
+		"chapters": ["PSA.19", "PSA.20", "PSA.21", "PSA.22", "PSA.23"],
+		"weight": 1
+	},
+	{
+		"id": "block-163",
+		"order": 163,
+		"chapters": ["PSA.24", "PSA.25", "PSA.26", "PSA.27", "PSA.28", "PSA.29"],
+		"weight": 1
+	},
+	{
+		"id": "block-164",
+		"order": 164,
+		"chapters": ["PSA.30", "PSA.31", "PSA.32", "PSA.33", "PSA.34"],
+		"weight": 1
+	},
+	{
+		"id": "block-165",
+		"order": 165,
+		"chapters": ["PSA.35", "PSA.36", "PSA.37"],
+		"weight": 1
+	},
+	{
+		"id": "block-166",
+		"order": 166,
+		"chapters": ["PSA.38", "PSA.39", "PSA.40", "PSA.41", "PSA.42"],
+		"weight": 1
+	},
+	{
+		"id": "block-167",
+		"order": 167,
+		"chapters": ["PSA.43", "PSA.44", "PSA.45", "PSA.46", "PSA.47"],
+		"weight": 1
+	},
+	{
+		"id": "block-168",
+		"order": 168,
+		"chapters": ["PSA.48", "PSA.49", "PSA.50", "PSA.51", "PSA.52", "PSA.53"],
+		"weight": 1
+	},
+	{
+		"id": "block-169",
+		"order": 169,
+		"chapters": ["PSA.54", "PSA.55", "PSA.56", "PSA.57", "PSA.58", "PSA.59"],
+		"weight": 1
+	},
+	{
+		"id": "block-170",
+		"order": 170,
+		"chapters": ["PSA.60", "PSA.61", "PSA.62", "PSA.63", "PSA.64", "PSA.65", "PSA.66"],
+		"weight": 1
+	},
+	{
+		"id": "block-171",
+		"order": 171,
+		"chapters": ["PSA.67", "PSA.68", "PSA.69"],
+		"weight": 1
+	},
+	{
+		"id": "block-172",
+		"order": 172,
+		"chapters": ["PSA.70", "PSA.71", "PSA.72", "PSA.73"],
+		"weight": 1
+	},
+	{
+		"id": "block-173",
+		"order": 173,
+		"chapters": ["PSA.74", "PSA.75", "PSA.76", "PSA.77", "PSA.78"],
+		"weight": 1
+	},
+	{
+		"id": "block-174",
+		"order": 174,
+		"chapters": ["PSA.79", "PSA.80", "PSA.81", "PSA.82", "PSA.83"],
+		"weight": 1
+	},
+	{
+		"id": "block-175",
+		"order": 175,
+		"chapters": ["PSA.84", "PSA.85", "PSA.86", "PSA.87", "PSA.88", "PSA.89"],
+		"weight": 1
+	},
+	{
+		"id": "block-176",
+		"order": 176,
+		"chapters": ["PSA.90", "PSA.91", "PSA.92", "PSA.93", "PSA.94"],
+		"weight": 1
+	},
+	{
+		"id": "block-177",
+		"order": 177,
+		"chapters": ["PSA.95", "PSA.96", "PSA.97", "PSA.98", "PSA.99", "PSA.100", "PSA.101", "PSA.102"],
+		"weight": 1
+	},
+	{
+		"id": "block-178",
+		"order": 178,
+		"chapters": ["PSA.103", "PSA.104", "PSA.105"],
+		"weight": 1
+	},
+	{
+		"id": "block-179",
+		"order": 179,
+		"chapters": ["PSA.106", "PSA.107"],
+		"weight": 1
+	},
+	{
+		"id": "block-180",
+		"order": 180,
+		"chapters": ["PSA.108", "PSA.109", "PSA.110", "PSA.111", "PSA.112", "PSA.113"],
+		"weight": 1
+	},
+	{
+		"id": "block-181",
+		"order": 181,
+		"chapters": ["PSA.114", "PSA.115", "PSA.116", "PSA.117", "PSA.118"],
+		"weight": 1
+	},
+	{
+		"id": "block-182",
+		"order": 182,
+		"chapters": ["PSA.119"],
+		"weight": 1
+	},
+	{
+		"id": "block-183",
+		"order": 183,
+		"chapters": [
+			"PSA.120",
+			"PSA.121",
+			"PSA.122",
+			"PSA.123",
+			"PSA.124",
+			"PSA.125",
+			"PSA.126",
+			"PSA.127",
+			"PSA.128",
+			"PSA.129",
+			"PSA.130"
+		],
+		"weight": 1
+	},
+	{
+		"id": "block-184",
+		"order": 184,
+		"chapters": ["PSA.131", "PSA.132", "PSA.133", "PSA.134", "PSA.135", "PSA.136"],
+		"weight": 1
+	},
+	{
+		"id": "block-185",
+		"order": 185,
+		"chapters": ["PSA.137", "PSA.138", "PSA.139", "PSA.140", "PSA.141", "PSA.142", "PSA.143"],
+		"weight": 1
+	},
+	{
+		"id": "block-186",
+		"order": 186,
+		"chapters": ["PSA.144", "PSA.145", "PSA.146", "PSA.147", "PSA.148"],
+		"weight": 1
+	},
+	{
+		"id": "block-187",
+		"order": 187,
+		"chapters": ["PSA.149", "PSA.150"],
+		"weight": 1
+	},
+	{
+		"id": "block-188",
+		"order": 188,
+		"chapters": ["PRO.1", "PRO.2", "PRO.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-189",
+		"order": 189,
+		"chapters": ["PRO.4", "PRO.5", "PRO.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-190",
+		"order": 190,
+		"chapters": ["PRO.7", "PRO.8", "PRO.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-191",
+		"order": 191,
+		"chapters": ["PRO.10", "PRO.11", "PRO.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-192",
+		"order": 192,
+		"chapters": ["PRO.13", "PRO.14", "PRO.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-193",
+		"order": 193,
+		"chapters": ["PRO.16", "PRO.17", "PRO.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-194",
+		"order": 194,
+		"chapters": ["PRO.19", "PRO.20", "PRO.21"],
+		"weight": 1
+	},
+	{
+		"id": "block-195",
+		"order": 195,
+		"chapters": ["PRO.22", "PRO.23", "PRO.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-196",
+		"order": 196,
+		"chapters": ["PRO.25", "PRO.26", "PRO.27"],
+		"weight": 1
+	},
+	{
+		"id": "block-197",
+		"order": 197,
+		"chapters": ["PRO.28", "PRO.29", "PRO.30", "PRO.31"],
+		"weight": 1
+	},
+	{
+		"id": "block-198",
+		"order": 198,
+		"chapters": ["ECC.1", "ECC.2", "ECC.3", "ECC.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-199",
+		"order": 199,
+		"chapters": ["ECC.5", "ECC.6", "ECC.7", "ECC.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-200",
+		"order": 200,
+		"chapters": ["ECC.9", "ECC.10", "ECC.11", "ECC.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-201",
+		"order": 201,
+		"chapters": ["SNG.1", "SNG.2", "SNG.3", "SNG.4", "SNG.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-202",
+		"order": 202,
+		"chapters": ["SNG.6", "SNG.7", "SNG.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-203",
+		"order": 203,
+		"chapters": ["ISA.1", "ISA.2", "ISA.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-204",
+		"order": 204,
+		"chapters": ["ISA.4", "ISA.5", "ISA.6", "ISA.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-205",
+		"order": 205,
+		"chapters": ["ISA.8", "ISA.9", "ISA.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-206",
+		"order": 206,
+		"chapters": ["ISA.11", "ISA.12", "ISA.13", "ISA.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-207",
+		"order": 207,
+		"chapters": ["ISA.15", "ISA.16", "ISA.17", "ISA.18", "ISA.19", "ISA.20"],
+		"weight": 1
+	},
+	{
+		"id": "block-208",
+		"order": 208,
+		"chapters": ["ISA.21", "ISA.22", "ISA.23", "ISA.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-209",
+		"order": 209,
+		"chapters": ["ISA.25", "ISA.26", "ISA.27", "ISA.28"],
+		"weight": 1
+	},
+	{
+		"id": "block-210",
+		"order": 210,
+		"chapters": ["ISA.29", "ISA.30", "ISA.31", "ISA.32"],
+		"weight": 1
+	},
+	{
+		"id": "block-211",
+		"order": 211,
+		"chapters": ["ISA.33", "ISA.34", "ISA.35", "ISA.36"],
+		"weight": 1
+	},
+	{
+		"id": "block-212",
+		"order": 212,
+		"chapters": ["ISA.37", "ISA.38", "ISA.39", "ISA.40"],
+		"weight": 1
+	},
+	{
+		"id": "block-213",
+		"order": 213,
+		"chapters": ["ISA.41", "ISA.42", "ISA.43"],
+		"weight": 1
+	},
+	{
+		"id": "block-214",
+		"order": 214,
+		"chapters": ["ISA.44", "ISA.45", "ISA.46", "ISA.47"],
+		"weight": 1
+	},
+	{
+		"id": "block-215",
+		"order": 215,
+		"chapters": ["ISA.48", "ISA.49", "ISA.50", "ISA.51"],
+		"weight": 1
+	},
+	{
+		"id": "block-216",
+		"order": 216,
+		"chapters": ["ISA.52", "ISA.53", "ISA.54", "ISA.55", "ISA.56", "ISA.57"],
+		"weight": 1
+	},
+	{
+		"id": "block-217",
+		"order": 217,
+		"chapters": ["ISA.58", "ISA.59", "ISA.60", "ISA.61", "ISA.62"],
+		"weight": 1
+	},
+	{
+		"id": "block-218",
+		"order": 218,
+		"chapters": ["ISA.63", "ISA.64", "ISA.65", "ISA.66"],
+		"weight": 1
+	},
+	{
+		"id": "block-219",
+		"order": 219,
+		"chapters": ["JER.1", "JER.2", "JER.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-220",
+		"order": 220,
+		"chapters": ["JER.4", "JER.5", "JER.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-221",
+		"order": 221,
+		"chapters": ["JER.7", "JER.8", "JER.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-222",
+		"order": 222,
+		"chapters": ["JER.10", "JER.11", "JER.12", "JER.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-223",
+		"order": 223,
+		"chapters": ["JER.14", "JER.15", "JER.16", "JER.17"],
+		"weight": 1
+	},
+	{
+		"id": "block-224",
+		"order": 224,
+		"chapters": ["JER.18", "JER.19", "JER.20", "JER.21", "JER.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-225",
+		"order": 225,
+		"chapters": ["JER.23", "JER.24", "JER.25"],
+		"weight": 1
+	},
+	{
+		"id": "block-226",
+		"order": 226,
+		"chapters": ["JER.26", "JER.27", "JER.28", "JER.29"],
+		"weight": 1
+	},
+	{
+		"id": "block-227",
+		"order": 227,
+		"chapters": ["JER.30", "JER.31", "JER.32"],
+		"weight": 1
+	},
+	{
+		"id": "block-228",
+		"order": 228,
+		"chapters": ["JER.33", "JER.34", "JER.35", "JER.36"],
+		"weight": 1
+	},
+	{
+		"id": "block-229",
+		"order": 229,
+		"chapters": ["JER.37", "JER.38", "JER.39", "JER.40"],
+		"weight": 1
+	},
+	{
+		"id": "block-230",
+		"order": 230,
+		"chapters": ["JER.41", "JER.42", "JER.43", "JER.44"],
+		"weight": 1
+	},
+	{
+		"id": "block-231",
+		"order": 231,
+		"chapters": ["JER.45", "JER.46", "JER.47", "JER.48"],
+		"weight": 1
+	},
+	{
+		"id": "block-232",
+		"order": 232,
+		"chapters": ["JER.49", "JER.50"],
+		"weight": 1
+	},
+	{
+		"id": "block-233",
+		"order": 233,
+		"chapters": ["JER.51", "JER.52"],
+		"weight": 1
+	},
+	{
+		"id": "block-234",
+		"order": 234,
+		"chapters": ["LAM.1", "LAM.2", "LAM.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-235",
+		"order": 235,
+		"chapters": ["LAM.4", "LAM.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-236",
+		"order": 236,
+		"chapters": ["EZK.1", "EZK.2", "EZK.3", "EZK.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-237",
+		"order": 237,
+		"chapters": ["EZK.5", "EZK.6", "EZK.7", "EZK.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-238",
+		"order": 238,
+		"chapters": ["EZK.9", "EZK.10", "EZK.11", "EZK.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-239",
+		"order": 239,
+		"chapters": ["EZK.13", "EZK.14", "EZK.15", "EZK.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-240",
+		"order": 240,
+		"chapters": ["EZK.17", "EZK.18", "EZK.19", "EZK.20"],
+		"weight": 1
+	},
+	{
+		"id": "block-241",
+		"order": 241,
+		"chapters": ["EZK.21", "EZK.22", "EZK.23"],
+		"weight": 1
+	},
+	{
+		"id": "block-242",
+		"order": 242,
+		"chapters": ["EZK.24", "EZK.25", "EZK.26", "EZK.27"],
+		"weight": 1
+	},
+	{
+		"id": "block-243",
+		"order": 243,
+		"chapters": ["EZK.28", "EZK.29", "EZK.30"],
+		"weight": 1
+	},
+	{
+		"id": "block-244",
+		"order": 244,
+		"chapters": ["EZK.31", "EZK.32", "EZK.33"],
+		"weight": 1
+	},
+	{
+		"id": "block-245",
+		"order": 245,
+		"chapters": ["EZK.34", "EZK.35", "EZK.36"],
+		"weight": 1
+	},
+	{
+		"id": "block-246",
+		"order": 246,
+		"chapters": ["EZK.37", "EZK.38", "EZK.39"],
+		"weight": 1
+	},
+	{
+		"id": "block-247",
+		"order": 247,
+		"chapters": ["EZK.40", "EZK.41", "EZK.42"],
+		"weight": 1
+	},
+	{
+		"id": "block-248",
+		"order": 248,
+		"chapters": ["EZK.43", "EZK.44", "EZK.45"],
+		"weight": 1
+	},
+	{
+		"id": "block-249",
+		"order": 249,
+		"chapters": ["EZK.46", "EZK.47", "EZK.48"],
+		"weight": 1
+	},
+	{
+		"id": "block-250",
+		"order": 250,
+		"chapters": ["DAN.1", "DAN.2", "DAN.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-251",
+		"order": 251,
+		"chapters": ["DAN.4", "DAN.5", "DAN.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-252",
+		"order": 252,
+		"chapters": ["DAN.7", "DAN.8", "DAN.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-253",
+		"order": 253,
+		"chapters": ["DAN.10", "DAN.11", "DAN.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-254",
+		"order": 254,
+		"chapters": ["HOS.1", "HOS.2", "HOS.3", "HOS.4", "HOS.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-255",
+		"order": 255,
+		"chapters": ["HOS.6", "HOS.7", "HOS.8", "HOS.9", "HOS.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-256",
+		"order": 256,
+		"chapters": ["HOS.11", "HOS.12", "HOS.13", "HOS.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-257",
+		"order": 257,
+		"chapters": ["JOL.1", "JOL.2", "JOL.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-258",
+		"order": 258,
+		"chapters": ["AMO.1", "AMO.2", "AMO.3", "AMO.4", "AMO.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-259",
+		"order": 259,
+		"chapters": ["AMO.6", "AMO.7", "AMO.8", "AMO.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-260",
+		"order": 260,
+		"chapters": ["OBA.1"],
+		"weight": 1
+	},
+	{
+		"id": "block-261",
+		"order": 261,
+		"chapters": ["JON.1", "JON.2", "JON.3", "JON.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-262",
+		"order": 262,
+		"chapters": ["MIC.1", "MIC.2", "MIC.3", "MIC.4", "MIC.5", "MIC.6", "MIC.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-263",
+		"order": 263,
+		"chapters": ["NAH.1", "NAH.2", "NAH.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-264",
+		"order": 264,
+		"chapters": ["HAB.1", "HAB.2", "HAB.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-265",
+		"order": 265,
+		"chapters": ["ZEP.1", "ZEP.2", "ZEP.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-266",
+		"order": 266,
+		"chapters": ["HAG.1", "HAG.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-267",
+		"order": 267,
+		"chapters": ["ZEC.1", "ZEC.2", "ZEC.3", "ZEC.4", "ZEC.5", "ZEC.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-268",
+		"order": 268,
+		"chapters": ["ZEC.7", "ZEC.8", "ZEC.9", "ZEC.10", "ZEC.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-269",
+		"order": 269,
+		"chapters": ["ZEC.12", "ZEC.13", "ZEC.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-270",
+		"order": 270,
+		"chapters": ["MAL.1", "MAL.2", "MAL.3", "MAL.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-271",
+		"order": 271,
+		"chapters": ["MAT.1", "MAT.2", "MAT.3", "MAT.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-272",
+		"order": 272,
+		"chapters": ["MAT.5", "MAT.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-273",
+		"order": 273,
+		"chapters": ["MAT.7", "MAT.8", "MAT.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-274",
+		"order": 274,
+		"chapters": ["MAT.10", "MAT.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-275",
+		"order": 275,
+		"chapters": ["MAT.12", "MAT.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-276",
+		"order": 276,
+		"chapters": ["MAT.14", "MAT.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-277",
+		"order": 277,
+		"chapters": ["MAT.16", "MAT.17", "MAT.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-278",
+		"order": 278,
+		"chapters": ["MAT.19", "MAT.20", "MAT.21"],
+		"weight": 1
+	},
+	{
+		"id": "block-279",
+		"order": 279,
+		"chapters": ["MAT.22", "MAT.23"],
+		"weight": 1
+	},
+	{
+		"id": "block-280",
+		"order": 280,
+		"chapters": ["MAT.24", "MAT.25"],
+		"weight": 1
+	},
+	{
+		"id": "block-281",
+		"order": 281,
+		"chapters": ["MAT.26"],
+		"weight": 1
+	},
+	{
+		"id": "block-282",
+		"order": 282,
+		"chapters": ["MAT.27", "MAT.28"],
+		"weight": 1
+	},
+	{
+		"id": "block-283",
+		"order": 283,
+		"chapters": ["MRK.1", "MRK.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-284",
+		"order": 284,
+		"chapters": ["MRK.3", "MRK.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-285",
+		"order": 285,
+		"chapters": ["MRK.5", "MRK.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-286",
+		"order": 286,
+		"chapters": ["MRK.7", "MRK.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-287",
+		"order": 287,
+		"chapters": ["MRK.9", "MRK.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-288",
+		"order": 288,
+		"chapters": ["MRK.11", "MRK.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-289",
+		"order": 289,
+		"chapters": ["MRK.13", "MRK.14"],
+		"weight": 1
+	},
+	{
+		"id": "block-290",
+		"order": 290,
+		"chapters": ["MRK.15", "MRK.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-291",
+		"order": 291,
+		"chapters": ["LUK.1"],
+		"weight": 1
+	},
+	{
+		"id": "block-292",
+		"order": 292,
+		"chapters": ["LUK.2", "LUK.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-293",
+		"order": 293,
+		"chapters": ["LUK.4", "LUK.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-294",
+		"order": 294,
+		"chapters": ["LUK.6", "LUK.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-295",
+		"order": 295,
+		"chapters": ["LUK.8", "LUK.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-296",
+		"order": 296,
+		"chapters": ["LUK.10", "LUK.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-297",
+		"order": 297,
+		"chapters": ["LUK.12", "LUK.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-298",
+		"order": 298,
+		"chapters": ["LUK.14", "LUK.15", "LUK.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-299",
+		"order": 299,
+		"chapters": ["LUK.17", "LUK.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-300",
+		"order": 300,
+		"chapters": ["LUK.19", "LUK.20"],
+		"weight": 1
+	},
+	{
+		"id": "block-301",
+		"order": 301,
+		"chapters": ["LUK.21", "LUK.22"],
+		"weight": 1
+	},
+	{
+		"id": "block-302",
+		"order": 302,
+		"chapters": ["LUK.23", "LUK.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-303",
+		"order": 303,
+		"chapters": ["JHN.1", "JHN.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-304",
+		"order": 304,
+		"chapters": ["JHN.3", "JHN.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-305",
+		"order": 305,
+		"chapters": ["JHN.5", "JHN.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-306",
+		"order": 306,
+		"chapters": ["JHN.7", "JHN.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-307",
+		"order": 307,
+		"chapters": ["JHN.9", "JHN.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-308",
+		"order": 308,
+		"chapters": ["JHN.11", "JHN.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-309",
+		"order": 309,
+		"chapters": ["JHN.13", "JHN.14", "JHN.15"],
+		"weight": 1
+	},
+	{
+		"id": "block-310",
+		"order": 310,
+		"chapters": ["JHN.16", "JHN.17", "JHN.18"],
+		"weight": 1
+	},
+	{
+		"id": "block-311",
+		"order": 311,
+		"chapters": ["JHN.19", "JHN.20", "JHN.21"],
+		"weight": 1
+	},
+	{
+		"id": "block-312",
+		"order": 312,
+		"chapters": ["ACT.1", "ACT.2"],
+		"weight": 1
+	},
+	{
+		"id": "block-313",
+		"order": 313,
+		"chapters": ["ACT.3", "ACT.4", "ACT.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-314",
+		"order": 314,
+		"chapters": ["ACT.6", "ACT.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-315",
+		"order": 315,
+		"chapters": ["ACT.8", "ACT.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-316",
+		"order": 316,
+		"chapters": ["ACT.10", "ACT.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-317",
+		"order": 317,
+		"chapters": ["ACT.12", "ACT.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-318",
+		"order": 318,
+		"chapters": ["ACT.14", "ACT.15", "ACT.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-319",
+		"order": 319,
+		"chapters": ["ACT.17", "ACT.18", "ACT.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-320",
+		"order": 320,
+		"chapters": ["ACT.20", "ACT.21"],
+		"weight": 1
+	},
+	{
+		"id": "block-321",
+		"order": 321,
+		"chapters": ["ACT.22", "ACT.23", "ACT.24"],
+		"weight": 1
+	},
+	{
+		"id": "block-322",
+		"order": 322,
+		"chapters": ["ACT.25", "ACT.26", "ACT.27", "ACT.28"],
+		"weight": 1
+	},
+	{
+		"id": "block-323",
+		"order": 323,
+		"chapters": ["ROM.1", "ROM.2", "ROM.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-324",
+		"order": 324,
+		"chapters": ["ROM.4", "ROM.5", "ROM.6", "ROM.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-325",
+		"order": 325,
+		"chapters": ["ROM.8", "ROM.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-326",
+		"order": 326,
+		"chapters": ["ROM.10", "ROM.11", "ROM.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-327",
+		"order": 327,
+		"chapters": ["ROM.13", "ROM.14", "ROM.15", "ROM.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-328",
+		"order": 328,
+		"chapters": ["1CO.1", "1CO.2", "1CO.3", "1CO.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-329",
+		"order": 329,
+		"chapters": ["1CO.5", "1CO.6", "1CO.7"],
+		"weight": 1
+	},
+	{
+		"id": "block-330",
+		"order": 330,
+		"chapters": ["1CO.8", "1CO.9", "1CO.10"],
+		"weight": 1
+	},
+	{
+		"id": "block-331",
+		"order": 331,
+		"chapters": ["1CO.11", "1CO.12", "1CO.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-332",
+		"order": 332,
+		"chapters": ["1CO.14", "1CO.15", "1CO.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-333",
+		"order": 333,
+		"chapters": ["2CO.1", "2CO.2", "2CO.3", "2CO.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-334",
+		"order": 334,
+		"chapters": ["2CO.5", "2CO.6", "2CO.7", "2CO.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-335",
+		"order": 335,
+		"chapters": ["2CO.9", "2CO.10", "2CO.11", "2CO.12", "2CO.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-336",
+		"order": 336,
+		"chapters": ["GAL.1", "GAL.2", "GAL.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-337",
+		"order": 337,
+		"chapters": ["GAL.4", "GAL.5", "GAL.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-338",
+		"order": 338,
+		"chapters": ["EPH.1", "EPH.2", "EPH.3", "EPH.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-339",
+		"order": 339,
+		"chapters": ["EPH.5", "EPH.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-340",
+		"order": 340,
+		"chapters": ["PHP.1", "PHP.2", "PHP.3", "PHP.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-341",
+		"order": 341,
+		"chapters": ["COL.1", "COL.2", "COL.3", "COL.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-342",
+		"order": 342,
+		"chapters": ["1TH.1", "1TH.2", "1TH.3", "1TH.4", "1TH.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-343",
+		"order": 343,
+		"chapters": ["2TH.1", "2TH.2", "2TH.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-344",
+		"order": 344,
+		"chapters": ["1TI.1", "1TI.2", "1TI.3", "1TI.4", "1TI.5", "1TI.6"],
+		"weight": 1
+	},
+	{
+		"id": "block-345",
+		"order": 345,
+		"chapters": ["2TI.1", "2TI.2", "2TI.3", "2TI.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-346",
+		"order": 346,
+		"chapters": ["TIT.1", "TIT.2", "TIT.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-347",
+		"order": 347,
+		"chapters": ["PHM.1"],
+		"weight": 1
+	},
+	{
+		"id": "block-348",
+		"order": 348,
+		"chapters": ["HEB.1", "HEB.2", "HEB.3", "HEB.4", "HEB.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-349",
+		"order": 349,
+		"chapters": ["HEB.6", "HEB.7", "HEB.8", "HEB.9"],
+		"weight": 1
+	},
+	{
+		"id": "block-350",
+		"order": 350,
+		"chapters": ["HEB.10", "HEB.11"],
+		"weight": 1
+	},
+	{
+		"id": "block-351",
+		"order": 351,
+		"chapters": ["HEB.12", "HEB.13"],
+		"weight": 1
+	},
+	{
+		"id": "block-352",
+		"order": 352,
+		"chapters": ["JAS.1", "JAS.2", "JAS.3", "JAS.4", "JAS.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-353",
+		"order": 353,
+		"chapters": ["1PE.1", "1PE.2", "1PE.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-354",
+		"order": 354,
+		"chapters": ["1PE.4", "1PE.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-355",
+		"order": 355,
+		"chapters": ["2PE.1", "2PE.2", "2PE.3"],
+		"weight": 1
+	},
+	{
+		"id": "block-356",
+		"order": 356,
+		"chapters": ["1JN.1", "1JN.2", "1JN.3", "1JN.4", "1JN.5"],
+		"weight": 1
+	},
+	{
+		"id": "block-357",
+		"order": 357,
+		"chapters": ["2JN.1"],
+		"weight": 1
+	},
+	{
+		"id": "block-358",
+		"order": 358,
+		"chapters": ["3JN.1"],
+		"weight": 1
+	},
+	{
+		"id": "block-359",
+		"order": 359,
+		"chapters": ["JUD.1"],
+		"weight": 1
+	},
+	{
+		"id": "block-360",
+		"order": 360,
+		"chapters": ["REV.1", "REV.2", "REV.3", "REV.4"],
+		"weight": 1
+	},
+	{
+		"id": "block-361",
+		"order": 361,
+		"chapters": ["REV.5", "REV.6", "REV.7", "REV.8"],
+		"weight": 1
+	},
+	{
+		"id": "block-362",
+		"order": 362,
+		"chapters": ["REV.9", "REV.10", "REV.11", "REV.12"],
+		"weight": 1
+	},
+	{
+		"id": "block-363",
+		"order": 363,
+		"chapters": ["REV.13", "REV.14", "REV.15", "REV.16"],
+		"weight": 1
+	},
+	{
+		"id": "block-364",
+		"order": 364,
+		"chapters": ["REV.17", "REV.18", "REV.19"],
+		"weight": 1
+	},
+	{
+		"id": "block-365",
+		"order": 365,
+		"chapters": ["REV.20", "REV.21", "REV.22"],
+		"weight": 1
+	}
+]
