@@ -1,10 +1,12 @@
 import { useRef, useState } from "react";
 import { parseBackup } from "../../export/backup";
 import type { AppState } from "../../storage/state";
+import { ConfirmDialog } from "../../components/ConfirmDialog";
 
 export function BackupRestoreControl({ onRestore }: { onRestore: (state: AppState) => void }) {
 	const fileInput = useRef<HTMLInputElement>(null);
 	const [message, setMessage] = useState("");
+	const [pendingRestore, setPendingRestore] = useState<AppState | null>(null);
 
 	async function restore(file?: File) {
 		if (!file) return;
@@ -13,9 +15,7 @@ export function BackupRestoreControl({ onRestore }: { onRestore: (state: AppStat
 			setMessage(result.reason);
 			return;
 		}
-		if (!window.confirm("Substituir os dados deste navegador pelo backup selecionado?")) return;
-		onRestore(result.state);
-		setMessage("Backup restaurado com sucesso.");
+		setPendingRestore(result.state);
 	}
 
 	return (
@@ -39,6 +39,21 @@ export function BackupRestoreControl({ onRestore }: { onRestore: (state: AppStat
 					{message}
 				</p>
 			)}
+			<ConfirmDialog
+				open={pendingRestore !== null}
+				title="Restaurar backup?"
+				message="Os dados atuais deste navegador serão substituídos pelo conteúdo do backup."
+				confirmLabel="Restaurar backup"
+				destructive
+				onCancel={() => setPendingRestore(null)}
+				onConfirm={() => {
+					if (pendingRestore) {
+						onRestore(pendingRestore);
+						setMessage("Backup restaurado com sucesso.");
+					}
+					setPendingRestore(null);
+				}}
+			/>
 		</div>
 	);
 }

@@ -1,6 +1,7 @@
 import { getChapterRange } from "../domain/bible/bible";
 import { getBookOptions } from "../domain/bible/references";
 import type { ChapterRef } from "../domain/bible/types";
+import { SelectField } from "./SelectField";
 
 const books = getBookOptions();
 
@@ -32,7 +33,7 @@ export function ChapterReferencePicker({
 		<fieldset className="form-fieldset reference-picker">
 			<legend>{label}</legend>
 			<label htmlFor={`${idPrefix}-book`}>Livro</label>
-			<select
+			<SelectField
 				id={`${idPrefix}-book`}
 				value={selectedBook}
 				onChange={(event) => {
@@ -46,9 +47,9 @@ export function ChapterReferencePicker({
 						{book.name}
 					</option>
 				))}
-			</select>
+			</SelectField>
 			<label htmlFor={`${idPrefix}-chapter`}>Capítulo</label>
-			<select
+			<SelectField
 				id={`${idPrefix}-chapter`}
 				value={value ?? ""}
 				disabled={!selectedBook || chapters.length === 0}
@@ -60,7 +61,7 @@ export function ChapterReferencePicker({
 						{reference.split(".")[1]}
 					</option>
 				))}
-			</select>
+			</SelectField>
 		</fieldset>
 	);
 }

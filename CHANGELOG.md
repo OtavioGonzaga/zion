@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Add primary navigation between Today, Plan, and completed readings, with reversible progress and immediate undo feedback.
+
+### Changed
+
+- Replace overlapping navigation states with one exclusive application view and keep settings and plan editing inside a consistent shell.
+- Improve mobile navigation, focus management, and user feedback.
+
 ## [0.2.0] - 2026-10-05
 
 ### Added

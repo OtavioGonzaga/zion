@@ -10,6 +10,15 @@ import { exportCurrentScheduleCsv } from "../../export/csv";
 import { downloadTextFile } from "../../export/download";
 import { BackupRestoreControl } from "./BackupRestoreControl";
 import type { AppState } from "../../storage/state";
+import { ConfirmDialog } from "../../components/ConfirmDialog";
+
+interface Confirmation {
+	title: string;
+	message: string;
+	confirmLabel: string;
+	destructive?: boolean;
+	action: () => void;
+}
 
 interface SettingsPanelProps {
 	state: AppState;
@@ -21,6 +30,8 @@ interface SettingsPanelProps {
 	onMarkRange: (start: ChapterRef, end: ChapterRef) => void;
 	onUnmarkRange: (start: ChapterRef, end: ChapterRef) => void;
 	onPrint: () => void;
+	onEditPlan: () => void;
+	headingRef?: React.RefObject<HTMLHeadingElement | null>;
 }
 
 export function SettingsPanel({
@@ -33,6 +44,8 @@ export function SettingsPanel({
 	onMarkRange,
 	onUnmarkRange,
 	onPrint,
+	onEditPlan,
+	headingRef,
 }: SettingsPanelProps) {
 	const today = getCurrentLocalDate();
 	const plan = state.plan!;
@@ -42,6 +55,7 @@ export function SettingsPanel({
 	const completed = new Set(state.progress.map(({ chapter }) => chapter));
 	const completedInRange = chaptersInRange.filter((chapter) => completed.has(chapter)).length;
 	const missingInRange = chaptersInRange.length - completedInRange;
+	const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
 
 	function exportJson() {
 		downloadTextFile(
@@ -68,13 +82,19 @@ export function SettingsPanel({
 	return (
 		<section className="card settings-card" aria-labelledby="settings-heading">
 			<p className="eyebrow">Privacidade e dados</p>
-			<h1 className="plan-title" id="settings-heading">
+			<h1 className="plan-title" id="settings-heading" tabIndex={-1} ref={headingRef}>
 				Configurações
 			</h1>
 			<p className="muted">
 				Seus dados ficam armazenados neste navegador. Limpar os dados do navegador pode remover seu
 				progresso; recomendamos exportar um backup JSON.
 			</p>
+			<div className="settings-group">
+				<h2>Plano</h2>
+				<button className="button" type="button" onClick={onEditPlan}>
+					Editar plano
+				</button>
+			</div>
 			<div className="settings-group">
 				<h2>Progresso</h2>
 				<p className="muted">
@@ -108,11 +128,13 @@ export function SettingsPanel({
 						type="button"
 						disabled={!missingInRange}
 						onClick={() => {
-							if (
-								missingInRange &&
-								window.confirm(`Marcar ${missingInRange} capítulos como lidos?`)
-							)
-								onMarkRange(rangeStart, rangeEnd);
+							if (missingInRange)
+								setConfirmation({
+									title: "Marcar capítulos como lidos?",
+									message: `Serão marcados ${missingInRange} capítulos como lidos.`,
+									confirmLabel: "Marcar como lidos",
+									action: () => onMarkRange(rangeStart, rangeEnd),
+								});
 						}}
 					>
 						Marcar {missingInRange} capítulos como lidos
@@ -122,11 +144,13 @@ export function SettingsPanel({
 						type="button"
 						disabled={!completedInRange}
 						onClick={() => {
-							if (
-								completedInRange &&
-								window.confirm(`Desmarcar ${completedInRange} capítulos deste intervalo?`)
-							)
-								onUnmarkRange(rangeStart, rangeEnd);
+							if (completedInRange)
+								setConfirmation({
+									title: "Desmarcar capítulos?",
+									message: `Serão removidos ${completedInRange} capítulos concluídos deste intervalo.`,
+									confirmLabel: "Desmarcar capítulos",
+									action: () => onUnmarkRange(rangeStart, rangeEnd),
+								});
 						}}
 					>
 						Desmarcar {completedInRange} capítulos
@@ -155,7 +179,13 @@ export function SettingsPanel({
 						className="button"
 						type="button"
 						onClick={() => {
-							if (window.confirm("Resetar todo o progresso deste plano?")) onResetProgress();
+							setConfirmation({
+								title: "Resetar progresso?",
+								message: "Todo o progresso concluído deste plano será removido.",
+								confirmLabel: "Resetar progresso",
+								destructive: true,
+								action: onResetProgress,
+							});
 						}}
 					>
 						Resetar progresso
@@ -164,14 +194,33 @@ export function SettingsPanel({
 						className="button button-danger"
 						type="button"
 						onClick={() => {
-							if (window.confirm("Remover o plano e todo o progresso salvo neste navegador?"))
-								onRemovePlan();
+							setConfirmation({
+								title: "Remover plano?",
+								message: "O plano e todo o progresso salvo neste navegador serão removidos.",
+								confirmLabel: "Remover plano",
+								destructive: true,
+								action: onRemovePlan,
+							});
 						}}
 					>
 						Remover plano
 					</button>
 				</div>
 			</div>
+			{confirmation && (
+				<ConfirmDialog
+					open
+					title={confirmation.title}
+					message={confirmation.message}
+					confirmLabel={confirmation.confirmLabel}
+					destructive={confirmation.destructive}
+					onCancel={() => setConfirmation(null)}
+					onConfirm={() => {
+						confirmation.action();
+						setConfirmation(null);
+					}}
+				/>
+			)}
 		</section>
 	);
 }

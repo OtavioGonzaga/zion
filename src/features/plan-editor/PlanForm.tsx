@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChapterReferencePicker } from "../../components/ChapterReferencePicker";
+import { SelectField } from "../../components/SelectField";
 import { getChapterRange } from "../../domain/bible/bible";
 import { getBookOptions } from "../../domain/bible/references";
 import type { ChapterRef, LocalDate } from "../../domain/bible/types";
@@ -12,6 +13,7 @@ interface PlanFormProps {
 	targetDate: LocalDate;
 	onSubmit: (plan: ReadingPlan, completedThrough?: ChapterRef) => void;
 	onCancel?: () => void;
+	onDirtyChange?: (dirty: boolean) => void;
 }
 
 const books = getBookOptions();
@@ -32,6 +34,7 @@ export function PlanForm({
 	targetDate,
 	onSubmit,
 	onCancel,
+	onDirtyChange,
 }: PlanFormProps) {
 	const start = partsFromReference(initialPlan?.startReference, "GEN", 1);
 	const end = partsFromReference(initialPlan?.endReference, "REV", 22);
@@ -44,6 +47,15 @@ export function PlanForm({
 	const [errors, setErrors] = useState<ReturnType<typeof validatePlan>>({});
 	const [readThrough, setReadThrough] = useState<ChapterRef | null>(null);
 	const [readThroughError, setReadThroughError] = useState(false);
+	const dirty =
+		Boolean(initialPlan) &&
+		(`${startBook}.${startChapter}` !== initialPlan?.startReference ||
+			`${endBook}.${endChapter}` !== initialPlan?.endReference ||
+			startDay !== initialPlan?.startDate ||
+			targetDay !== initialPlan?.targetDate ||
+			readThrough !== null);
+
+	useEffect(() => onDirtyChange?.(dirty), [dirty, onDirtyChange]);
 
 	function submit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -69,7 +81,7 @@ export function PlanForm({
 				<fieldset className="form-fieldset">
 					<legend>Começar em</legend>
 					<label htmlFor="start-book">Livro inicial</label>
-					<select
+					<SelectField
 						id="start-book"
 						value={startBook}
 						onChange={(event) => {
@@ -82,9 +94,9 @@ export function PlanForm({
 								{book.name}
 							</option>
 						))}
-					</select>
+					</SelectField>
 					<label htmlFor="start-chapter">Capítulo inicial</label>
-					<select
+					<SelectField
 						id="start-chapter"
 						aria-invalid={Boolean(errors.startReference)}
 						aria-describedby={errors.startReference ? "start-reference-error" : undefined}
@@ -99,7 +111,7 @@ export function PlanForm({
 								</option>
 							),
 						)}
-					</select>
+					</SelectField>
 					{errors.startReference && (
 						<p className="field-error" id="start-reference-error" role="alert">
 							{errors.startReference}
@@ -109,7 +121,7 @@ export function PlanForm({
 				<fieldset className="form-fieldset">
 					<legend>Terminar em</legend>
 					<label htmlFor="end-book">Livro final</label>
-					<select
+					<SelectField
 						id="end-book"
 						value={endBook}
 						onChange={(event) => {
@@ -122,9 +134,9 @@ export function PlanForm({
 								{book.name}
 							</option>
 						))}
-					</select>
+					</SelectField>
 					<label htmlFor="end-chapter">Capítulo final</label>
-					<select
+					<SelectField
 						id="end-chapter"
 						aria-invalid={Boolean(errors.endReference)}
 						aria-describedby={errors.endReference ? "end-reference-error" : undefined}
@@ -139,7 +151,7 @@ export function PlanForm({
 								</option>
 							),
 						)}
-					</select>
+					</SelectField>
 					{errors.endReference && (
 						<p className="field-error" id="end-reference-error" role="alert">
 							{errors.endReference}

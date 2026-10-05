@@ -23,7 +23,10 @@ export function ScheduleList({
 	return (
 		<div className="schedule-list">
 			{assignments.map((assignment) => (
-				<article className="schedule-day" key={assignment.date}>
+				<article
+					className={`schedule-day${assignment.chapters.length === 0 ? " schedule-day-free" : ""}`}
+					key={assignment.date}
+				>
 					<div className="schedule-day-heading">
 						<time dateTime={assignment.date}>{describeDay(assignment.date, today)}</time>
 						<strong>

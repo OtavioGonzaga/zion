@@ -23,6 +23,10 @@ analytics.
   `src/export/`.
 - Keep React views and interactions in `src/app/`, `src/components/`, and
   `src/features/`.
+- Model mutually exclusive application screens with one active view; do not
+  introduce independent boolean flags for navigation state.
+- Progress records completion facts. Schedules project pending readings, and
+  completed-reading views are derived from progress rather than persisted.
 - The scheduler is a pure projection, independent from React.
 - The source of truth is the plan configuration, user progress, reading
   template, and current local date. The schedule is derived data, except that

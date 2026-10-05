@@ -12,6 +12,7 @@ data stay in the browser's local storage.
 
 - Choose a start/end Bible chapter and a local start/target date.
 - Follow a reading schedule based on the ordered reading template.
+- Navigate between today's reading, the complete plan, and completed chapters.
 - Mark or unmark individual chapters, including chapters ahead of schedule.
 - Mark or unmark a chapter range at once, or set “Já li até…” when creating a plan.
 - Recalculate pending readings while keeping today's assignment stable.

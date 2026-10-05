@@ -32,6 +32,38 @@ button {
 	padding-block: 0.4rem 1.5rem;
 	border-bottom: 1px solid var(--color-border);
 }
+.primary-nav {
+	display: flex;
+	gap: 0.35rem;
+	margin-top: 0.75rem;
+	padding: 0.35rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	background: var(--color-surface);
+}
+.primary-nav-item {
+	flex: 1;
+	min-height: 2.75rem;
+	display: grid;
+	place-items: center;
+	border-radius: var(--radius-sm);
+	color: var(--color-text-muted);
+	font-weight: 650;
+	text-decoration: none;
+}
+.primary-nav-item-active {
+	background: var(--color-primary);
+	color: #282828;
+}
+.primary-nav-item:focus-visible,
+.brand:focus-visible,
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible {
+	outline: 3px solid var(--color-primary);
+	outline-offset: 2px;
+}
 
 .brand {
 	display: inline-flex;
@@ -66,6 +98,16 @@ button {
 .icon-button {
 	min-width: 2.75rem;
 	padding-inline: 0.7rem;
+}
+.icon-button:has(svg) {
+	display: grid;
+	place-items: center;
+}
+.action-notice .button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.35rem;
 }
 .button {
 	padding: 0.65rem 1rem;
@@ -243,15 +285,43 @@ button {
 	color: var(--color-text-muted);
 	font-size: 0.88rem;
 }
-.form-fieldset input,
-.form-fieldset select {
+.form-fieldset input {
 	width: 100%;
 	min-height: 2.8rem;
-	padding: 0.55rem 0.7rem;
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-sm);
 	background: var(--color-background);
 	color: var(--color-text);
+}
+.select-control {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	width: 100%;
+	min-width: 0;
+}
+.select-control > select {
+	width: 100%;
+	min-width: 0;
+	min-height: 2.8rem;
+	padding: 0.55rem 2.75rem 0.55rem 0.7rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	appearance: none;
+	background: var(--color-background);
+	color: var(--color-text);
+	font: inherit;
+}
+.select-control > select:disabled {
+	opacity: 0.6;
+}
+.select-control-arrow {
+	position: absolute;
+	top: 50%;
+	right: 0.75rem;
+	transform: translateY(-50%);
+	color: var(--color-text);
+	pointer-events: none;
 }
 .field-error {
 	margin: 0;
@@ -288,6 +358,14 @@ button {
 	padding: 0.85rem 0;
 	border-top: 1px solid var(--color-border);
 }
+.schedule-day-free {
+	padding-block: 0.35rem;
+	color: var(--color-text-muted);
+}
+.schedule-day-free .schedule-day-heading strong {
+	font-size: 0.88rem;
+	font-weight: 500;
+}
 .schedule-day-heading {
 	display: grid;
 	grid-template-columns: minmax(6rem, 0.35fr) 1fr;
@@ -310,6 +388,61 @@ button {
 }
 .settings-card {
 	grid-column: 1 / -1;
+}
+.completed-card,
+.edit-plan-card {
+	grid-column: 1 / -1;
+}
+.completed-group {
+	margin-top: 1.5rem;
+}
+.completed-group h2 {
+	margin-bottom: 0.45rem;
+	font-size: 0.9rem;
+	color: var(--color-text-muted);
+	text-transform: uppercase;
+}
+.completed-row time {
+	margin-left: auto;
+	color: var(--color-text-muted);
+	font-family: var(--font-mono);
+	font-size: 0.82rem;
+}
+.completed-filter {
+	display: inline-flex;
+	min-width: 0;
+}
+.completed-book-select {
+	width: auto;
+	max-width: 12rem;
+}
+.completed-book-select select {
+	min-height: 2.75rem;
+	padding: 0.65rem 2.75rem 0.65rem 0.65rem;
+}
+.action-notice,
+.action-message {
+	position: fixed;
+	z-index: 5;
+	left: 50%;
+	bottom: 1rem;
+	transform: translateX(-50%);
+	width: min(100% - 2rem, 36rem);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.65rem 0.8rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	background: var(--color-surface);
+	box-shadow: 0 0.5rem 2rem #0004;
+}
+.action-message button {
+	border: 0;
+	background: none;
+	color: var(--color-text);
+	font-size: 1.3rem;
 }
 .settings-group {
 	margin-top: 2rem;
@@ -337,6 +470,13 @@ button {
 @media (min-width: 720px) {
 	.app-shell {
 		padding-top: 2rem;
+	}
+	.primary-nav {
+		max-width: 32rem;
+		margin-inline: auto;
+	}
+	.primary-nav-item {
+		padding-inline: 1.5rem;
 	}
 	.dashboard {
 		grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.9fr);
@@ -395,6 +535,9 @@ button {
 		padding: 0;
 	}
 	.app-header,
+	.primary-nav,
+	.action-notice,
+	.action-message,
 	.dashboard-actions,
 	.today-card,
 	.upcoming-card,
@@ -453,5 +596,16 @@ button {
 	}
 	.progress-track {
 		border: 1px solid var(--color-border);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
 	}
 }
