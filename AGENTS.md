@@ -25,7 +25,8 @@ analytics.
   `src/features/`.
 - The scheduler is a pure projection, independent from React.
 - The source of truth is the plan configuration, user progress, reading
-  template, and current date. A schedule is derived data.
+  template, and current local date. The schedule is derived data, except that
+  `dailyAssignment` snapshots today's target so progress cannot shift it mid-day.
 
 ## Domain Rules
 
@@ -34,6 +35,9 @@ analytics.
 - Do not store Bible text or introduce a dependency on a Bible translation.
 - Preserve template reading blocks: the scheduler may combine blocks, but may
   not split an effective block between days.
+- Corrupt or unsupported local-storage data must not be overwritten by an
+  automatic fallback save; persist a replacement only after an explicit user
+  action.
 - Keep the application name in `src/config/app.ts`; do not duplicate it in
   product code.
 
@@ -56,6 +60,9 @@ analytics.
 - Follow Semantic Versioning and Keep a Changelog.
 - Do not change the package version in ordinary changes; releases are explicit
   operations.
+- Release metadata must be prepared by the tested Bun tooling under
+  `scripts/release/`; workflow YAML orchestrates but does not transform the
+  changelog inline. Run validation before pushing the release commit.
 
 ## Agent Material
 

@@ -10,5 +10,4 @@ test-results/
 *.log
 *.tsbuildinfo
 !.agents/**
-!.env*
 .agents/artifacts/*

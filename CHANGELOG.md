@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Bulk chapter progress controls and the optional “Já li até…” shortcut when creating or editing a plan.
+
+### Fixed
+
+- Keep today's reading assignment stable while adapting future readings to progress changes.
+- Preserve incompatible or corrupt local data until the user explicitly replaces it.
+- Distribute pending reading blocks across available days, including highly uneven block weights.
+- Refresh the active local date at midnight and when the app regains focus.
+- Keep CSV export aligned with the frozen daily assignment and recalculated future schedule.
+
+### Changed
+
+- Make completed chapter progress reversible in bulk from settings.
+
 ## [0.1.1] - 2026-10-05
 
 ### Fixed
@@ -27,6 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Versioned local storage with schema validation and non-crashing fallback behavior.
 - JSON backup/restore, CSV schedule download, print-to-PDF view, and confirmed reset/removal controls.
 - CI quality gates, GitHub Pages deployment, release validation, Dependabot, and pull request template.
-- Expanded browser regression coverage for backup restoration, frozen daily assignments, progress reversal, expired plans, themes, and responsive widths.
+- Initial browser regression coverage for backup restoration, expired plans, themes, and responsive widths.
 - Updated project documentation for the delivered product behavior and local privacy model.
 - Initial React, TypeScript, Vite, Bun, Vitest, and Playwright foundation.
