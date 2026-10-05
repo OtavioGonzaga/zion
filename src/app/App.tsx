@@ -55,6 +55,16 @@ export function App() {
 	}, [appState]);
 
 	useEffect(() => {
+		if (appState.preferences.theme !== "system") return;
+		const media = window.matchMedia("(prefers-color-scheme: light)");
+		const updateTheme = (event: MediaQueryListEvent) => {
+			document.documentElement.dataset.theme = event.matches ? "light" : "dark";
+		};
+		media.addEventListener("change", updateTheme);
+		return () => media.removeEventListener("change", updateTheme);
+	}, [appState.preferences.theme]);
+
+	useEffect(() => {
 		if (projectedToday && appState.dailyAssignment?.date !== today) {
 			setAppState((state) => ({
 				...state,

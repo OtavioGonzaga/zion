@@ -77,6 +77,8 @@ export function PlanForm({
 					<label htmlFor="start-chapter">Capítulo inicial</label>
 					<select
 						id="start-chapter"
+						aria-invalid={Boolean(errors.startReference)}
+						aria-describedby={errors.startReference ? "start-reference-error" : undefined}
 						value={startChapter}
 						onChange={(event) => setStartChapter(Number(event.target.value))}
 					>
@@ -90,7 +92,7 @@ export function PlanForm({
 						)}
 					</select>
 					{errors.startReference && (
-						<p className="field-error" role="alert">
+						<p className="field-error" id="start-reference-error" role="alert">
 							{errors.startReference}
 						</p>
 					)}
@@ -115,6 +117,8 @@ export function PlanForm({
 					<label htmlFor="end-chapter">Capítulo final</label>
 					<select
 						id="end-chapter"
+						aria-invalid={Boolean(errors.endReference)}
+						aria-describedby={errors.endReference ? "end-reference-error" : undefined}
 						value={endChapter}
 						onChange={(event) => setEndChapter(Number(event.target.value))}
 					>
@@ -128,7 +132,7 @@ export function PlanForm({
 						)}
 					</select>
 					{errors.endReference && (
-						<p className="field-error" role="alert">
+						<p className="field-error" id="end-reference-error" role="alert">
 							{errors.endReference}
 						</p>
 					)}
@@ -140,11 +144,13 @@ export function PlanForm({
 					<input
 						id="start-date"
 						type="date"
+						aria-invalid={Boolean(errors.startDate)}
+						aria-describedby={errors.startDate ? "start-date-error" : undefined}
 						value={startDay}
 						onChange={(event) => setStartDay(event.target.value)}
 					/>
 					{errors.startDate && (
-						<p className="field-error" role="alert">
+						<p className="field-error" id="start-date-error" role="alert">
 							{errors.startDate}
 						</p>
 					)}
@@ -154,11 +160,13 @@ export function PlanForm({
 					<input
 						id="target-date"
 						type="date"
+						aria-invalid={Boolean(errors.targetDate)}
+						aria-describedby={errors.targetDate ? "target-date-error" : undefined}
 						value={targetDay}
 						onChange={(event) => setTargetDay(event.target.value)}
 					/>
 					{errors.targetDate && (
-						<p className="field-error" role="alert">
+						<p className="field-error" id="target-date-error" role="alert">
 							{errors.targetDate}
 						</p>
 					)}

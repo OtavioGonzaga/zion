@@ -15,4 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Versioned local storage with schema validation and non-crashing fallback behavior.
 - JSON backup/restore, CSV schedule download, print-to-PDF view, and confirmed reset/removal controls.
 - CI quality gates, GitHub Pages deployment, release validation, Dependabot, and pull request template.
+- Expanded browser regression coverage for backup restoration, frozen daily assignments, progress reversal, expired plans, themes, and responsive widths.
+- Updated project documentation for the delivered product behavior and local privacy model.
 - Initial React, TypeScript, Vite, Bun, Vitest, and Playwright foundation.

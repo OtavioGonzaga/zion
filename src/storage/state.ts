@@ -72,6 +72,7 @@ function parseCompletedChapter(value: unknown): CompletedChapter | null {
 function parseAssignment(value: unknown): DailyAssignment | null {
 	if (!isRecord(value) || !isLocalDate(value.date) || !Array.isArray(value.chapters)) return null;
 	if (!value.chapters.every(isChapterRef)) return null;
+	if (new Set(value.chapters).size !== value.chapters.length) return null;
 	return {
 		date: value.date,
 		chapters: value.chapters,

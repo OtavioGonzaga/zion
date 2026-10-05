@@ -1,4 +1,5 @@
 import { getCurrentLocalDate } from "../../domain/bible/date";
+import { appConfig } from "../../config/app";
 import type { DailyAssignment, Schedule } from "../../domain/plan/types";
 import { serializeBackup } from "../../export/backup";
 import { exportScheduleCsv } from "../../export/csv";
@@ -28,7 +29,11 @@ export function SettingsPanel({
 	const today = getCurrentLocalDate();
 
 	function exportJson() {
-		downloadTextFile(`zion-backup-${today}.json`, serializeBackup(state), "application/json");
+		downloadTextFile(
+			`${appConfig.name.toLowerCase()}-backup-${today}.json`,
+			serializeBackup(state),
+			"application/json",
+		);
 	}
 
 	function exportCsv() {
@@ -37,7 +42,7 @@ export function SettingsPanel({
 				assignment.date === today && todayAssignment ? todayAssignment : assignment,
 			) ?? [];
 		downloadTextFile(
-			`zion-schedule-${today}.csv`,
+			`${appConfig.name.toLowerCase()}-schedule-${today}.csv`,
 			exportScheduleCsv(
 				assignments,
 				state.progress.map((item) => item.chapter),
