@@ -1,5 +1,9 @@
 # Zion
 
+<p align="center">
+  <img src="public/assets/zion-logo-horizontal.png" alt="Zion" width="260" />
+</p>
+
 Zion is a local-first web application for creating and following Bible reading
 plans. It works in the browser without an account or backend; plan and progress
 data stay in the browser's local storage.

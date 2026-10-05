@@ -34,10 +34,22 @@ button {
 }
 
 .brand {
-	font-family: var(--font-mono);
-	font-size: 1rem;
-	font-weight: 800;
-	letter-spacing: 0.18em;
+	display: inline-flex;
+	align-items: center;
+}
+.brand img {
+	display: block;
+	width: clamp(7rem, 24vw, 9rem);
+	height: auto;
+}
+.brand img.brand-logo-dark {
+	display: none;
+}
+:root[data-theme="dark"] .brand img.brand-logo-light {
+	display: none;
+}
+:root[data-theme="dark"] .brand img.brand-logo-dark {
+	display: block;
 }
 
 .header-actions {

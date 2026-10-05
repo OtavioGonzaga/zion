@@ -310,9 +310,22 @@ function Header({
 }) {
 	return (
 		<header className="app-header">
-			<span className="brand" aria-label={appConfig.name}>
-				{appConfig.name.toUpperCase()}
-			</span>
+			<a
+				className="brand"
+				href={import.meta.env.BASE_URL}
+				aria-label={`${appConfig.name} — início`}
+			>
+				<img
+					className="brand-logo-light"
+					src={`${import.meta.env.BASE_URL}assets/zion-logo-horizontal.png`}
+					alt=""
+				/>
+				<img
+					className="brand-logo-dark"
+					src={`${import.meta.env.BASE_URL}assets/zion-logo-horizontal-dark.png`}
+					alt=""
+				/>
+			</a>
 			<div className="header-actions">
 				<label htmlFor="theme-select" className="sr-only">
 					Tema
