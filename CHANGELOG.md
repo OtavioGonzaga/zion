@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-10-05
-
 ### Added
 
 - Canonical metadata for the 66-book Bible and a validated, ordered 365-block reading template.

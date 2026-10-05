@@ -1,6 +1,6 @@
 {
 	"name": "zion",
-	"version": "0.1.0",
+	"version": "0.0.0",
 	"private": true,
 	"description": "A local-first Bible reading plan companion.",
 	"license": "MIT",
