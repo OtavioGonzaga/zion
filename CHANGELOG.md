@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Load the Inter typeface from Google Fonts.
+
 ## [0.3.0] - 2026-10-05
 
 ### Added
