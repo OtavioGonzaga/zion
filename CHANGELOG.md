@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Ensure Print / Save as PDF renders the complete reading schedule after closing settings, with Zion branding and print-friendly colors.
+
 ### Added
 
 - Canonical metadata for the 66-book Bible and a validated, ordered 365-block reading template.

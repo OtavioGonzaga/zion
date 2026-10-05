@@ -32,6 +32,7 @@ export function App() {
 	const [editing, setEditing] = useState(false);
 	const [showSchedule, setShowSchedule] = useState(false);
 	const [showSettings, setShowSettings] = useState(false);
+	const [printRequested, setPrintRequested] = useState(false);
 	const today = getCurrentLocalDate();
 	const defaultTargetDate = addDays(today, 364);
 	const computedSchedule = appState.plan
@@ -73,6 +74,15 @@ export function App() {
 		}
 	}, [projectedToday, appState.dailyAssignment?.date, today]);
 
+	useEffect(() => {
+		if (!printRequested || !showSchedule) return;
+		const frame = requestAnimationFrame(() => {
+			window.print();
+			setPrintRequested(false);
+		});
+		return () => cancelAnimationFrame(frame);
+	}, [printRequested, showSchedule]);
+
 	function savePlan(plan: ReadingPlan) {
 		setAppState((state) => ({ ...state, plan, progress: [], dailyAssignment: null }));
 		setEditing(false);
@@ -85,8 +95,9 @@ export function App() {
 	}
 
 	function printPlan() {
+		setShowSettings(false);
 		setShowSchedule(true);
-		requestAnimationFrame(() => window.print());
+		setPrintRequested(true);
 	}
 
 	function toggleChapter(chapter: ChapterRef, checked: boolean) {
@@ -146,6 +157,18 @@ export function App() {
 			/>
 			{storageIssue && <StorageNotice />}
 			<main className="dashboard">
+				<section className="print-header" aria-label="Resumo para impressão">
+					<img
+						src={`${import.meta.env.BASE_URL}assets/zion-logo-horizontal.png`}
+						alt={appConfig.name}
+					/>
+					<div>
+						<p>Plano de leitura</p>
+						<h1>
+							{formatReferenceRange(appState.plan.startReference, appState.plan.endReference)}
+						</h1>
+					</div>
+				</section>
 				<section className="card summary-card" aria-labelledby="plan-heading">
 					<p className="eyebrow">Seu plano de leitura</p>
 					<h1 className="plan-title" id="plan-heading">

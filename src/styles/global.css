@@ -82,6 +82,9 @@ button {
 	gap: 1rem;
 	padding-top: 1.25rem;
 }
+.print-header {
+	display: none;
+}
 .card {
 	min-width: 0;
 	padding: 1.2rem;
@@ -361,16 +364,21 @@ button {
 @media print {
 	:root {
 		color-scheme: light;
-		--color-background: #fff;
-		--color-surface: #fff;
-		--color-surface-muted: #eee;
-		--color-border: #bbb;
-		--color-text: #111;
-		--color-text-muted: #444;
+		--color-background: #fbf1c7;
+		--color-surface: #f9f5d7;
+		--color-surface-muted: #f2e5bc;
+		--color-border: #d5c4a1;
+		--color-text: #3c3836;
+		--color-text-muted: #7c6f64;
+		--color-primary: #b57614;
+	}
+	* {
+		print-color-adjust: exact;
+		-webkit-print-color-adjust: exact;
 	}
 	body {
-		background: #fff;
-		color: #111;
+		background: var(--color-background);
+		color: var(--color-text);
 		font-size: 10pt;
 	}
 	.app-shell {
@@ -390,13 +398,39 @@ button {
 		display: block;
 		padding: 0;
 	}
+	.print-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 2px solid var(--color-primary);
+	}
+	.print-header img {
+		width: 7.5rem;
+		height: auto;
+	}
+	.print-header p,
+	.print-header h1 {
+		margin: 0;
+	}
+	.print-header p {
+		color: var(--color-text-muted);
+		font-size: 0.85rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.print-header h1 {
+		font-size: 1.25rem;
+	}
 	.summary-card,
 	.schedule-card,
 	.state-card {
 		margin: 0 0 1rem;
 		padding: 0.5rem 0;
 		border: 0;
-		background: #fff;
+		background: var(--color-surface);
 	}
 	.schedule-list {
 		display: block;
@@ -409,6 +443,6 @@ button {
 		display: none;
 	}
 	.progress-track {
-		border: 1px solid #777;
+		border: 1px solid var(--color-border);
 	}
 }

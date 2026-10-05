@@ -156,3 +156,20 @@ test("keeps the complete schedule within common viewport widths", async ({ page 
 		expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 	}
 });
+
+test("prepares the full schedule with branded styling before printing", async ({ page }) => {
+	await page.goto("/");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+	await page.evaluate(() => {
+		window.print = () => undefined;
+	});
+	await page.getByRole("button", { name: "Imprimir / Salvar em PDF" }).click();
+
+	await expect(page.getByRole("heading", { name: "Próximas leituras" })).toBeVisible();
+	await page.emulateMedia({ media: "print" });
+	await expect(page.getByLabel("Resumo para impressão")).toBeVisible();
+	await expect(
+		page.getByLabel("Resumo para impressão").getByRole("img", { name: "Zion" }),
+	).toBeVisible();
+});
