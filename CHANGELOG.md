@@ -13,5 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Gruvbox dark/light themes, responsive dashboard shell, and theme preference control.
 - Pure Bible-reference, local-date, reading-schedule, and progress-projection domain logic with invariant-focused tests.
 - Versioned local storage with schema validation and non-crashing fallback behavior.
+- JSON backup/restore, CSV schedule download, print-to-PDF view, and confirmed reset/removal controls.
 - CI quality gates, GitHub Pages deployment, release validation, Dependabot, and pull request template.
 - Initial React, TypeScript, Vite, Bun, Vitest, and Playwright foundation.

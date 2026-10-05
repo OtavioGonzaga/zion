@@ -2,6 +2,7 @@ import { isValidChapterRef } from "../domain/bible/bible";
 import { parseLocalDate } from "../domain/bible/date";
 import type { ChapterRef, LocalDate } from "../domain/bible/types";
 import type { CompletedChapter, DailyAssignment, ReadingPlan } from "../domain/plan/types";
+import { validatePlan } from "../domain/plan/validation";
 
 export type ThemePreference = "system" | "dark" | "light";
 
@@ -52,12 +53,13 @@ function parsePlan(value: unknown): ReadingPlan | null {
 		!isLocalDate(value.targetDate)
 	)
 		return null;
-	return {
+	const plan = {
 		startReference: value.startReference,
 		endReference: value.endReference,
 		startDate: value.startDate,
 		targetDate: value.targetDate,
 	};
+	return Object.keys(validatePlan(plan)).length === 0 ? plan : null;
 }
 
 function parseCompletedChapter(value: unknown): CompletedChapter | null {

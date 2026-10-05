@@ -6,6 +6,8 @@ import type { ChapterRef, LocalDate } from "../domain/bible/types";
 import { findAssignment, generateSchedule, getPlanProgress } from "../domain/plan/scheduler";
 import type { DailyAssignment, ReadingPlan } from "../domain/plan/types";
 import { PlanForm } from "../features/plan-editor/PlanForm";
+import { BackupRestoreControl } from "../features/settings/BackupRestoreControl";
+import { SettingsPanel } from "../features/settings/SettingsPanel";
 import { readingTemplate } from "../data/reading-template";
 import { loadAppState, saveAppState } from "../storage/state";
 import type { AppState, ThemePreference } from "../storage/state";
@@ -29,6 +31,7 @@ export function App() {
 	const [storageIssue, setStorageIssue] = useState(() => loadAppState().issue);
 	const [editing, setEditing] = useState(false);
 	const [showSchedule, setShowSchedule] = useState(false);
+	const [showSettings, setShowSettings] = useState(false);
 	const today = getCurrentLocalDate();
 	const defaultTargetDate = addDays(today, 364);
 	const computedSchedule = appState.plan
@@ -71,6 +74,11 @@ export function App() {
 		setAppState((state) => ({ ...state, preferences: { ...state.preferences, theme } }));
 	}
 
+	function printPlan() {
+		setShowSchedule(true);
+		requestAnimationFrame(() => window.print());
+	}
+
 	function toggleChapter(chapter: ChapterRef, checked: boolean) {
 		setAppState((state) => ({
 			...state,
@@ -104,6 +112,15 @@ export function App() {
 							onSubmit={savePlan}
 							onCancel={editing ? () => setEditing(false) : undefined}
 						/>
+						<div className="restore-from-backup">
+							<p className="muted">Já tem um backup deste navegador ou de outro dispositivo?</p>
+							<BackupRestoreControl
+								onRestore={(state) => {
+									setAppState(state);
+									applyTheme(state.preferences.theme);
+								}}
+							/>
+						</div>
 					</section>
 				</main>
 			</div>
@@ -112,7 +129,11 @@ export function App() {
 
 	return (
 		<div className="app-shell">
-			<Header theme={appState.preferences.theme} onThemeChange={setTheme} />
+			<Header
+				theme={appState.preferences.theme}
+				onThemeChange={setTheme}
+				onSettings={() => setShowSettings((value) => !value)}
+			/>
 			{storageIssue && <StorageNotice />}
 			<main className="dashboard">
 				<section className="card summary-card" aria-labelledby="plan-heading">
@@ -158,7 +179,30 @@ export function App() {
 					</div>
 				</section>
 
-				{computedSchedule?.status === "completed" ? (
+				{showSettings ? (
+					<SettingsPanel
+						state={appState}
+						schedule={computedSchedule}
+						todayAssignment={frozenToday}
+						onRestore={(state) => {
+							setAppState(state);
+							applyTheme(state.preferences.theme);
+							setShowSettings(false);
+						}}
+						onResetProgress={() => setAppState((state) => ({ ...state, progress: [] }))}
+						onRemovePlan={() => {
+							setAppState((state) => ({
+								...state,
+								plan: null,
+								progress: [],
+								dailyAssignment: null,
+							}));
+							setShowSettings(false);
+							setEditing(false);
+						}}
+						onPrint={printPlan}
+					/>
+				) : computedSchedule?.status === "completed" ? (
 					<section className="card state-card">
 						<p className="eyebrow">Plano concluído</p>
 						<h2>Parabéns! Você terminou sua leitura.</h2>
@@ -248,9 +292,11 @@ export function App() {
 function Header({
 	theme,
 	onThemeChange,
+	onSettings,
 }: {
 	theme: ThemePreference;
 	onThemeChange: (theme: ThemePreference) => void;
+	onSettings?: () => void;
 }) {
 	return (
 		<header className="app-header">
@@ -271,6 +317,16 @@ function Header({
 					<option value="dark">Escuro</option>
 					<option value="light">Claro</option>
 				</select>
+				{onSettings && (
+					<button
+						className="icon-button"
+						type="button"
+						onClick={onSettings}
+						aria-label="Configurações"
+					>
+						⚙
+					</button>
+				)}
 			</div>
 		</header>
 	);

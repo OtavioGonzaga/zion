@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 
 test("creates and persists a reading plan", async ({ page }) => {
 	await page.goto("/");
@@ -58,4 +59,38 @@ test("keeps today's assignment frozen while future progress adapts the schedule"
 	await expect(page.getByRole("heading", { name: "Jeremias 6–22" })).toBeVisible();
 	await page.reload();
 	await expect(page.getByRole("checkbox", { name: "Jeremias 6" })).toBeChecked();
+});
+
+test("exports and restores a backup after removing the local plan", async ({ page }) => {
+	await page.goto("/");
+	await page.getByLabel("Livro inicial").selectOption({ label: "Jeremias" });
+	await page.getByLabel("Capítulo inicial").selectOption("6");
+	await page.getByLabel("Livro final").selectOption({ label: "Jeremias" });
+	await page.getByLabel("Capítulo final").selectOption("22");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+	await page.getByRole("button", { name: "Configurações" }).click();
+
+	const jsonDownload = page.waitForEvent("download");
+	await page.getByRole("button", { name: "Exportar backup JSON" }).click();
+	const backupFile = await jsonDownload;
+	const backupPath = await backupFile.path();
+	if (!backupPath) throw new Error("Backup download was not saved");
+
+	page.on("dialog", (dialog) => dialog.accept());
+	await page.getByRole("button", { name: "Remover plano" }).click();
+	await expect(page.getByRole("heading", { name: "Crie seu plano de leitura" })).toBeVisible();
+	await page.getByLabel("Selecionar backup JSON").setInputFiles({
+		name: backupFile.suggestedFilename(),
+		mimeType: "application/json",
+		buffer: await readFile(backupPath),
+	});
+	await expect(page.getByRole("heading", { name: "Jeremias 6–22" })).toBeVisible();
+
+	await page.getByRole("button", { name: "Configurações" }).click();
+	const csvDownload = page.waitForEvent("download");
+	await page.getByRole("button", { name: "Exportar cronograma CSV" }).click();
+	const csvFile = await csvDownload;
+	const csvPath = await csvFile.path();
+	if (!csvPath) throw new Error("CSV download was not saved");
+	expect(await readFile(csvPath, "utf8")).toContain("date,reading,status");
 });

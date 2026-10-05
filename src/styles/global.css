@@ -284,6 +284,31 @@ button {
 .state-card h2 {
 	margin-block: 0.4rem 1rem;
 }
+.settings-card {
+	grid-column: 1 / -1;
+}
+.settings-group {
+	margin-top: 2rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--color-border);
+}
+.settings-group h2 {
+	margin-bottom: 0.8rem;
+}
+.settings-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.65rem;
+}
+.restore-from-backup {
+	margin-top: 1.5rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--color-border);
+}
+.button-danger {
+	border-color: var(--color-danger);
+	color: var(--color-danger);
+}
 
 @media (min-width: 720px) {
 	.app-shell {
@@ -318,5 +343,60 @@ button {
 	}
 	.today-card {
 		grid-row: span 2;
+	}
+}
+
+@media print {
+	:root {
+		color-scheme: light;
+		--color-background: #fff;
+		--color-surface: #fff;
+		--color-surface-muted: #eee;
+		--color-border: #bbb;
+		--color-text: #111;
+		--color-text-muted: #444;
+	}
+	body {
+		background: #fff;
+		color: #111;
+		font-size: 10pt;
+	}
+	.app-shell {
+		width: 100%;
+		padding: 0;
+	}
+	.app-header,
+	.dashboard-actions,
+	.today-card,
+	.upcoming-card,
+	.settings-card,
+	.button,
+	.header-actions {
+		display: none !important;
+	}
+	.dashboard {
+		display: block;
+		padding: 0;
+	}
+	.summary-card,
+	.schedule-card,
+	.state-card {
+		margin: 0 0 1rem;
+		padding: 0.5rem 0;
+		border: 0;
+		background: #fff;
+	}
+	.schedule-list {
+		display: block;
+	}
+	.schedule-day {
+		break-inside: avoid;
+		padding: 0.25rem 0;
+	}
+	.schedule-day .reading-list {
+		display: none;
+	}
+	.progress-track {
+		border: 1px solid #777;
 	}
 }
