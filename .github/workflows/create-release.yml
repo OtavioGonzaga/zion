@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: SemVer version without a v prefix or build metadata
+        description: SemVer version without a v prefix
         required: true
         type: string
 
@@ -15,34 +15,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  preflight:
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-      - name: Validate release request
-        env:
-          VERSION: ${{ inputs.version }}
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          [[ "$VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]
-          test "$GITHUB_REF" = "refs/heads/main"
-          git fetch origin main --tags
-          test "$GITHUB_SHA" = "$(git rev-parse origin/main)"
-          ! git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null
-          ! gh release view "v$VERSION" >/dev/null 2>&1
-
-  prepare:
-    needs: preflight
+  release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     permissions:
       contents: write
-    outputs:
-      release_commit_sha: ${{ steps.commit.outputs.release_commit_sha }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -51,93 +28,77 @@ jobs:
         with:
           bun-version: 1.4.2
       - run: bun install --frozen-lockfile
-      - name: Prepare package metadata
+      - name: Prepare release commit locally
+        id: candidate
         env:
           VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
           git fetch origin main --tags
           test "$GITHUB_SHA" = "$(git rev-parse origin/main)"
-          node --input-type=module <<'EOF'
-          import fs from "node:fs";
-          const path = "package.json";
-          const packageJson = JSON.parse(fs.readFileSync(path, "utf8"));
-          packageJson.version = process.env.VERSION;
-          fs.writeFileSync(path, `${JSON.stringify(packageJson, null, "\t")}\n`);
-          EOF
-          python3 - <<'EOF'
-          from datetime import date
-          from pathlib import Path
-          import os
-
-          path = Path("CHANGELOG.md")
-          text = path.read_text()
-          version = os.environ["VERSION"]
-          marker = "## [Unreleased]\n"
-          release = f"## [{version}] - {date.today().isoformat()}\n"
-          if release in text:
-              raise SystemExit(f"Changelog already contains {version}")
-          if marker not in text:
-              raise SystemExit("Missing Unreleased changelog section")
-          path.write_text(text.replace(marker, f"{marker}\n{release}", 1))
-          EOF
-          bunx oxfmt package.json CHANGELOG.md
-          git diff --check
-          test -n "$(git diff --name-only)"
-          test "$(git diff --name-only | grep -Ev '^(package\.json|CHANGELOG\.md)$' || true)" = ""
-      - id: commit
-        env:
-          VERSION: ${{ inputs.version }}
+          tag="v$VERSION"
+          current_version="$(bun -e 'const p = await Bun.file("package.json").json(); console.log(p.version)')"
+          if [[ "$current_version" = "$VERSION" ]]; then
+            test "$(git log -1 --format=%s)" = "chore(release): v$VERSION"
+            grep -Eq "^## \[$VERSION\] - [0-9]{4}-[0-9]{2}-[0-9]{2}$" CHANGELOG.md
+            test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+            echo "already_pushed=true" >> "$GITHUB_OUTPUT"
+          else
+            if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+              echo "Tag $tag exists without a matching release commit on main." >&2
+              exit 1
+            fi
+            bun run release:prepare -- "$VERSION"
+            git diff --check
+            git config user.name github-actions[bot]
+            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+            git add package.json CHANGELOG.md
+            git commit -m "chore(release): v$VERSION"
+            test "$(git rev-parse HEAD^)" = "$(git rev-parse origin/main)"
+            echo "already_pushed=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "release_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Validate release candidate
         run: |
           set -euo pipefail
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git commit -am "chore(release): v$VERSION"
-          git fetch origin main
-          test "$(git rev-parse HEAD^)" = "$(git rev-parse origin/main)"
-          git push origin HEAD:main
-          echo "release_commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
-  validate:
-    needs: prepare
-    uses: ./.github/workflows/ci.yml
-    with:
-      ref: ${{ needs.prepare.outputs.release_commit_sha }}
-    permissions:
-      contents: read
-
-  publish:
-    needs: [prepare, validate]
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ needs.prepare.outputs.release_commit_sha }}
-          fetch-depth: 0
-      - name: Tag and publish the release
+          bun run format:check
+          bun run lint
+          bun run typecheck
+          bun run test
+          bun run build
+          bunx playwright install --with-deps chromium
+          bun run test:e2e
+      - name: Publish validated commit, tag, and release
         env:
           VERSION: ${{ inputs.version }}
-          RELEASE_COMMIT: ${{ needs.prepare.outputs.release_commit_sha }}
+          RELEASE_COMMIT: ${{ steps.candidate.outputs.release_commit }}
+          ALREADY_PUSHED: ${{ steps.candidate.outputs.already_pushed }}
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test "$(node -p 'require("./package.json").version')" = "$VERSION"
-          grep -Fq "## [$VERSION]" CHANGELOG.md
-          git fetch origin main --tags
           test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
-          git merge-base --is-ancestor "$RELEASE_COMMIT" origin/main
+          git fetch origin main --tags
+          if [[ "$ALREADY_PUSHED" = "true" ]]; then
+            test "$(git rev-parse origin/main)" = "$RELEASE_COMMIT"
+          else
+            test "$(git rev-parse origin/main)" = "$(git rev-parse HEAD^)"
+            git push origin HEAD:main
+          fi
+
           tag="v$VERSION"
-          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
-            test "$(git rev-parse "$tag^{}")" = "$RELEASE_COMMIT"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            remote_tag_commit="$(git ls-remote origin "refs/tags/$tag^{}" | cut -f1)"
+            if [[ -z "$remote_tag_commit" ]]; then
+              remote_tag_commit="$(git ls-remote origin "refs/tags/$tag" | cut -f1)"
+            fi
+            test "$remote_tag_commit" = "$RELEASE_COMMIT"
           else
             git config user.name github-actions[bot]
             git config user.email 41898282+github-actions[bot]@users.noreply.github.com
             git tag --annotate "$tag" "$RELEASE_COMMIT" --message "Release $tag"
-            git push origin "$tag"
+            git push origin "refs/tags/$tag"
           fi
-          if gh release view "$tag" >/dev/null 2>&1; then
-            exit 0
+
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --title "$tag" --generate-notes
           fi
-          gh release create "$tag" --title "$tag" --generate-notes
