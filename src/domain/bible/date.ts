@@ -43,3 +43,7 @@ export function formatLocalDate(date: LocalDate, options?: Intl.DateTimeFormatOp
 		new Date(year!, month! - 1, day!, 12),
 	);
 }
+
+export function getCurrentLocalDate(now = new Date()): LocalDate {
+	return `${now.getFullYear().toString().padStart(4, "0")}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}` as LocalDate;
+}

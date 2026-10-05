@@ -1,17 +1,29 @@
 import { expect, test } from "@playwright/test";
 
-test("loads the application shell", async ({ page }) => {
+test("creates and persists a reading plan", async ({ page }) => {
 	await page.goto("/");
+	await expect(page.getByRole("heading", { name: "Crie seu plano de leitura" })).toBeVisible();
 
-	await expect(page.getByText("ZION", { exact: true })).toBeVisible();
-	await expect(page.getByRole("heading", { name: "Uma jornada pela Palavra" })).toBeVisible();
-	await expect(page.getByRole("checkbox")).toHaveCount(5);
+	await page.getByLabel("Livro inicial").selectOption({ label: "Jeremias" });
+	await page.getByLabel("Capítulo inicial").selectOption("6");
+	await page.getByLabel("Livro final").selectOption({ label: "Apocalipse" });
+	await page.getByLabel("Capítulo final").selectOption("22");
+	await page.getByRole("button", { name: "Criar plano" }).click();
+
+	await expect(page.getByRole("heading", { name: "Jeremias 6, Apocalipse 22" })).toBeVisible();
+	await page.reload();
+	await expect(page.getByRole("heading", { name: "Jeremias 6, Apocalipse 22" })).toBeVisible();
 });
 
-test("keeps the reading view usable on a mobile viewport", async ({ page }) => {
+test("validates a reversed chapter range and remains usable on mobile", async ({ page }) => {
 	await page.setViewportSize({ width: 360, height: 800 });
 	await page.goto("/");
+	await page.getByLabel("Livro inicial").selectOption({ label: "Apocalipse" });
+	await page.getByLabel("Capítulo inicial").selectOption("22");
+	await page.getByLabel("Livro final").selectOption({ label: "Gênesis" });
+	await page.getByLabel("Capítulo final").selectOption("1");
+	await page.getByRole("button", { name: "Criar plano" }).click();
 
-	await expect(page.getByText("Leitura de hoje", { exact: true })).toBeVisible();
-	await expect(page.getByRole("checkbox").first()).toBeVisible();
+	await expect(page.getByRole("alert")).toContainText("capítulo final");
+	await expect(page.getByLabel("Livro inicial")).toBeVisible();
 });

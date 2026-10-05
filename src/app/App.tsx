@@ -1,36 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { appConfig } from "../config/app";
-
-type ThemePreference = "system" | "dark" | "light";
-
-const sampleReadings = ["Jeremias 6", "Jeremias 7", "Jeremias 8", "Jeremias 9", "Jeremias 10"];
-const upcomingReadings = [
-	{ date: "06 OUT", reading: "Jeremias 11–17" },
-	{ date: "07 OUT", reading: "Jeremias 18–22" },
-	{ date: "08 OUT", reading: "Jeremias 23–29" },
-];
+import { addDays, formatLocalDate, getCurrentLocalDate } from "../domain/bible/date";
+import { formatReferences } from "../domain/bible/references";
+import type { LocalDate } from "../domain/bible/types";
+import type { ReadingPlan } from "../domain/plan/types";
+import { PlanForm } from "../features/plan-editor/PlanForm";
+import { loadAppState, saveAppState } from "../storage/state";
+import type { AppState, ThemePreference } from "../storage/state";
 
 function applyTheme(theme: ThemePreference) {
-	const resolved =
+	document.documentElement.dataset.theme =
 		theme === "system"
 			? window.matchMedia("(prefers-color-scheme: light)").matches
 				? "light"
 				: "dark"
 			: theme;
-	document.documentElement.dataset.theme = resolved;
-	window.localStorage.setItem("zion:theme", theme);
 }
 
 export function App() {
-	const [theme, setTheme] = useState<ThemePreference>(() => {
-		const stored = window.localStorage.getItem("zion:theme");
-		return stored === "dark" || stored === "light" ? stored : "system";
-	});
-	const [checked, setChecked] = useState<string[]>(["Jeremias 6"]);
+	const [appState, setAppState] = useState<AppState>(() => loadAppState().state);
+	const [storageIssue, setStorageIssue] = useState(() => loadAppState().issue);
+	const [editing, setEditing] = useState(false);
+	const today = getCurrentLocalDate();
+	const defaultTargetDate = addDays(today, 364);
 
-	function changeTheme(value: ThemePreference) {
-		setTheme(value);
-		applyTheme(value);
+	useEffect(() => {
+		if (!saveAppState(appState)) setStorageIssue("unavailable");
+	}, [appState]);
+
+	function savePlan(plan: ReadingPlan) {
+		setAppState((state) => ({ ...state, plan, progress: [], dailyAssignment: null }));
+		setEditing(false);
+	}
+
+	function setTheme(theme: ThemePreference) {
+		applyTheme(theme);
+		setAppState((state) => ({ ...state, preferences: { ...state.preferences, theme } }));
 	}
 
 	return (
@@ -46,92 +51,70 @@ export function App() {
 					<select
 						id="theme-select"
 						className="icon-button"
-						value={theme}
-						onChange={(event) => changeTheme(event.target.value as ThemePreference)}
-						aria-label="Tema"
+						value={appState.preferences.theme}
+						onChange={(event) => setTheme(event.target.value as ThemePreference)}
 					>
 						<option value="system">Sistema</option>
 						<option value="dark">Escuro</option>
 						<option value="light">Claro</option>
 					</select>
-					<button className="icon-button" type="button" aria-label="Configurações">
-						⚙
-					</button>
 				</div>
 			</header>
+			{storageIssue && (
+				<p className="notice" role="status">
+					Os dados locais não puderam ser lidos ou salvos. Você pode continuar, mas as alterações
+					talvez não permaneçam após fechar esta página.
+				</p>
+			)}
 
-			<main className="dashboard">
-				<section className="card summary-card" aria-labelledby="plan-heading">
-					<p className="eyebrow">Seu plano de leitura</p>
-					<h1 className="plan-title" id="plan-heading">
-						Uma jornada pela Palavra
-					</h1>
-					<div className="plan-range">
-						<strong>Jeremias 6</strong>
-						<span aria-hidden="true">→</span>
-						<strong>Apocalipse 22</strong>
-					</div>
-					<div className="progress-label">
-						<strong>31% concluído</strong>
-						<span className="muted">128 de 404 capítulos</span>
-					</div>
-					<div
-						className="progress-track"
-						role="progressbar"
-						aria-label="Progresso do plano"
-						aria-valuenow={31}
-						aria-valuemin={0}
-						aria-valuemax={100}
-					>
-						<div className="progress-fill" />
-					</div>
-				</section>
-
-				<section className="card today-card" aria-labelledby="today-heading">
-					<div className="section-heading">
-						<div>
-							<p className="eyebrow">Leitura de hoje</p>
-							<h2 id="today-heading">05 de outubro</h2>
+			{!appState.plan || editing ? (
+				<main className="setup-layout">
+					<section className="card setup-card">
+						<p className="eyebrow">{editing ? "Configurações do plano" : "Primeiro acesso"}</p>
+						<h1 className="plan-title">
+							{editing ? "Edite seu plano" : "Crie seu plano de leitura"}
+						</h1>
+						<p className="muted setup-intro">
+							Escolha o intervalo de capítulos e as datas para distribuir as leituras.
+						</p>
+						<PlanForm
+							initialPlan={editing ? (appState.plan ?? undefined) : undefined}
+							startDate={today as LocalDate}
+							targetDate={defaultTargetDate}
+							onSubmit={savePlan}
+							onCancel={editing ? () => setEditing(false) : undefined}
+						/>
+					</section>
+				</main>
+			) : (
+				<main className="dashboard">
+					<section className="card summary-card" aria-labelledby="plan-heading">
+						<p className="eyebrow">Seu plano de leitura</p>
+						<h1 className="plan-title" id="plan-heading">
+							{formatReferences([appState.plan.startReference, appState.plan.endReference])}
+						</h1>
+						<div className="plan-range">
+							<span>
+								De <strong>{formatLocalDate(appState.plan.startDate)}</strong>
+							</span>
+							<span>
+								até <strong>{formatLocalDate(appState.plan.targetDate)}</strong>
+							</span>
 						</div>
-						<span className="today-date">DIA 01</span>
-					</div>
-					<div className="reading-list">
-						{sampleReadings.map((reading) => (
-							<label className="reading-row" key={reading}>
-								<input
-									type="checkbox"
-									checked={checked.includes(reading)}
-									onChange={() =>
-										setChecked((current) =>
-											current.includes(reading)
-												? current.filter((item) => item !== reading)
-												: [...current, reading],
-										)
-									}
-								/>
-								<span>{reading}</span>
-							</label>
-						))}
-					</div>
-				</section>
-
-				<section className="card upcoming-card" aria-labelledby="upcoming-heading">
-					<div className="section-heading">
-						<h2 id="upcoming-heading">Próximas leituras</h2>
-						<button className="button" type="button">
-							Ver plano
+						<p className="muted setup-intro">
+							Seu plano está salvo neste navegador. O cronograma e o acompanhamento de progresso
+							serão carregados a seguir.
+						</p>
+						<button
+							className="button button-primary"
+							type="button"
+							onClick={() => setEditing(true)}
+						>
+							Editar plano
 						</button>
-					</div>
-					<div className="upcoming-list">
-						{upcomingReadings.map((item) => (
-							<div className="upcoming-item" key={item.date}>
-								<time>{item.date}</time>
-								<strong>{item.reading}</strong>
-							</div>
-						))}
-					</div>
-				</section>
-			</main>
+					</section>
+				</main>
+			)}
 		</div>
 	);
 }

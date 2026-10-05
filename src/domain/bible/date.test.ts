@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addDays, formatLocalDate, listDates, parseLocalDate } from "./date";
+import { addDays, formatLocalDate, getCurrentLocalDate, listDates, parseLocalDate } from "./date";
 
 describe("local calendar dates", () => {
 	it("rejects invalid dates and accepts leap days", () => {
@@ -20,5 +20,9 @@ describe("local calendar dates", () => {
 
 	it("formats dates as readable local calendar dates", () => {
 		expect(formatLocalDate("2026-10-05", { month: "short" })).toContain("05");
+	});
+
+	it("reads the local calendar day from the current date", () => {
+		expect(getCurrentLocalDate(new Date(2026, 9, 5, 23, 59))).toBe("2026-10-05");
 	});
 });

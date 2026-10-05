@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./app/App";
 import { appConfig } from "./config/app";
+import { loadAppState } from "./storage/state";
 import "./styles/global.css";
 
 const rootElement = document.getElementById("root");
@@ -11,15 +12,13 @@ if (!rootElement) {
 }
 
 document.title = appConfig.name;
-const savedTheme = window.localStorage.getItem("zion:theme");
-if (savedTheme === "dark" || savedTheme === "light") {
-	document.documentElement.dataset.theme = savedTheme;
-} else {
-	document.documentElement.dataset.theme = window.matchMedia("(prefers-color-scheme: light)")
-		.matches
-		? "light"
-		: "dark";
-}
+const theme = loadAppState().state.preferences.theme;
+document.documentElement.dataset.theme =
+	theme === "system"
+		? window.matchMedia("(prefers-color-scheme: light)").matches
+			? "light"
+			: "dark"
+		: theme;
 
 createRoot(rootElement).render(
 	<StrictMode>
