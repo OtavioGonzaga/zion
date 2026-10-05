@@ -1,6 +1,7 @@
 import { formatReferences } from "../domain/bible/references";
 import type { ChapterRef, LocalDate } from "../domain/bible/types";
 import type { DailyAssignment } from "../domain/plan/types";
+import type { Schedule } from "../domain/plan/types";
 
 function escapeCell(value: string): string {
 	return `"${value.replaceAll('"', '""')}"`;
@@ -22,4 +23,15 @@ export function exportScheduleCsv(assignments: DailyAssignment[], progress: Chap
 		return [assignment.date as LocalDate, reading, status].map(escapeCell).join(",");
 	});
 	return ["date,reading,status", ...rows].join("\r\n");
+}
+
+export function exportCurrentScheduleCsv(
+	today: LocalDate,
+	todayAssignment: DailyAssignment | undefined,
+	schedule: Schedule,
+	progress: ChapterRef[],
+): string {
+	const future = schedule.assignments.filter((assignment) => assignment.date > today);
+	const assignments = [...(todayAssignment?.date === today ? [todayAssignment] : []), ...future];
+	return exportScheduleCsv(assignments, progress);
 }
