@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-05
+
 ### Fixed
 
 - Recalculate today's reading from current progress so it matches the complete schedule.
