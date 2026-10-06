@@ -37,15 +37,9 @@ import { isPrimaryView } from "./navigation";
 import type { AppView, PrimaryView } from "./navigation";
 import { useAppNavigation } from "./useAppNavigation";
 import { useCurrentLocalDate } from "./useCurrentLocalDate";
-
-function applyTheme(theme: ThemePreference) {
-	document.documentElement.dataset.theme =
-		theme === "system"
-			? window.matchMedia("(prefers-color-scheme: light)").matches
-				? "light"
-				: "dark"
-			: theme;
-}
+import { PwaStatus } from "../pwa/PwaStatus";
+import { usePwaLifecycle } from "../pwa/usePwaLifecycle";
+import { applyTheme } from "../config/theme";
 
 export function App({
 	initialState,
@@ -68,6 +62,7 @@ export function App({
 	const [printRequested, setPrintRequested] = useState(false);
 	const printReturnView = useRef<AppView>("today");
 	const headingRef = useRef<HTMLHeadingElement>(null);
+	const pwa = usePwaLifecycle();
 	const navigated = useRef(false);
 	const hasPlan = Boolean(appState.plan);
 	const { view, navigate, reset, continuePendingNavigation, cancelPendingNavigation } =
@@ -121,7 +116,7 @@ export function App({
 		if (appState.preferences.theme !== "system") return;
 		const media = window.matchMedia("(prefers-color-scheme: light)");
 		const updateTheme = (event: MediaQueryListEvent) => {
-			document.documentElement.dataset.theme = event.matches ? "light" : "dark";
+			applyTheme(event.matches ? "light" : "dark");
 		};
 		media.addEventListener("change", updateTheme);
 		return () => media.removeEventListener("change", updateTheme);
@@ -445,6 +440,14 @@ export function App({
 					</button>
 				</div>
 			)}
+			<PwaStatus
+				updateAvailable={pwa.updateAvailable}
+				offlineReady={pwa.offlineReady}
+				editDirty={effectiveView === "edit-plan" && editDirty}
+				onApplyUpdate={pwa.applyUpdate}
+				onDismissUpdate={pwa.dismissUpdate}
+				onDismissOfflineReady={pwa.dismissOfflineReady}
+			/>
 		</div>
 	);
 }

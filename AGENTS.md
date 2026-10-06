@@ -44,6 +44,16 @@ analytics.
   action.
 - Keep the application name in `src/config/app.ts`; do not duplicate it in
   product code.
+- PWA configuration must respect Vite's dynamic `base`. Prefer relative URLs
+  and never hardcode `/zion/` or `/` in manifest, service-worker, or shortcut
+  URLs when a relative URL can be used.
+- Service-worker updates must be user-confirmed. Do not introduce automatic
+  page reloads that can discard unsaved plan edits.
+- The service worker caches application assets only. User plan and progress
+  remain in the existing local-storage schema.
+- Prefer `generateSW` configuration over a custom service worker. Move to
+  `injectManifest` only when a concrete requirement cannot be expressed with
+  the generated worker.
 
 ## Scope And Quality
 

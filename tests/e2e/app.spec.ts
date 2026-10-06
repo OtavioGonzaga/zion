@@ -1,6 +1,80 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
+test("serves a valid install manifest and registers the service worker", async ({ page }) => {
+	await page.goto("/");
+	const manifestHref = await page.locator('link[rel="manifest"]').getAttribute("href");
+	expect(manifestHref).toBeTruthy();
+	const manifest = await page.evaluate(async (href) => {
+		const response = await fetch(href!);
+		if (!response.ok) throw new Error(`Manifest request failed: ${response.status}`);
+		return response.json();
+	}, manifestHref);
+	expect(manifest).toMatchObject({
+		name: "Zion",
+		short_name: "Zion",
+		display: "standalone",
+		start_url: "./#today",
+		scope: "./",
+		id: "./",
+	});
+	expect(manifest.shortcuts.map((shortcut: { url: string }) => shortcut.url)).toEqual([
+		"./#today",
+		"./#plan",
+		"./#completed",
+	]);
+	await page.evaluate(async () => {
+		await navigator.serviceWorker.ready;
+	});
+	const registration = await page.evaluate(() =>
+		navigator.serviceWorker.getRegistration().then((value) => ({
+			active: Boolean(value?.active),
+			scope: value?.scope,
+		})),
+	);
+	expect(registration.active).toBe(true);
+	expect(registration.scope).toBe(new URL("/", page.url()).href);
+});
+
+test("keeps plan and progress available offline", async ({ page, context }) => {
+	try {
+		await page.goto("/");
+		const now = new Date();
+		const dateValue = (date: Date) =>
+			`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+		const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 4);
+		await page.getByLabel("Livro inicial").selectOption("JER");
+		await page.getByLabel("Capítulo inicial").selectOption("6");
+		await page.getByLabel("Livro final").selectOption("JER");
+		await page.getByLabel("Capítulo final").selectOption("10");
+		await page.getByLabel("Data inicial").fill(dateValue(now));
+		await page.getByLabel("Data final").fill(dateValue(target));
+		await page.getByRole("button", { name: "Criar plano" }).click();
+		await page.evaluate(async () => {
+			await navigator.serviceWorker.ready;
+		});
+		await page.reload();
+		await expect
+			.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller)))
+			.toBe(true);
+		await context.setOffline(true);
+		await page.reload();
+		await expect(page.getByRole("heading", { name: "Jeremias 6–10" })).toBeVisible();
+		const chapter = page.getByRole("checkbox", { name: "Jeremias 6" });
+		await chapter.check();
+		await page.reload();
+		await expect(page.getByRole("checkbox", { name: "Jeremias 6" })).toBeChecked();
+		await page.getByRole("link", { name: "Plano" }).click();
+		await expect(page.getByRole("heading", { name: "Plano" })).toBeVisible();
+		await page.getByRole("link", { name: "Concluídos" }).click();
+		await expect(page.getByRole("heading", { name: "Concluídos" })).toBeVisible();
+		await page.getByRole("button", { name: "Configurações" }).click();
+		await expect(page.getByRole("heading", { name: "Configurações" })).toBeVisible();
+	} finally {
+		await context.setOffline(false);
+	}
+});
+
 test("creates and persists a reading plan", async ({ page }) => {
 	await page.goto("/");
 	await expect(page.getByRole("heading", { name: "Crie seu plano de leitura" })).toBeVisible();
@@ -394,6 +468,7 @@ test("persists the selected theme", async ({ page }) => {
 	await page.getByRole("button", { name: "Tema: Sistema" }).click();
 	await page.getByRole("button", { name: "Claro" }).click();
 	await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+	await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#f9f5d7");
 	await page.reload();
 	await expect(page.getByRole("button", { name: "Tema: Claro" })).toBeVisible();
 	await expect(page.locator("html")).toHaveAttribute("data-theme", "light");

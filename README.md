@@ -20,6 +20,16 @@ data stay in the browser's local storage.
 - Back up and restore plan data as JSON; export the current schedule as CSV.
 - Print the schedule or save it as PDF using the browser's print dialog.
 
+## Install as an app
+
+On supported Android and Chromium browsers, open the browser menu and choose
+**Install app** (the wording may vary). On iOS, use Safari's **Add to Home
+Screen** action. After the first successful online load, Zion's application
+shell is available offline. Reading plan and progress remain stored locally in
+the browser/device; installing the app does not add cloud sync. Clearing browser
+or app data, removing site data, or uninstalling on some platforms may remove
+local data, so keep a JSON backup from **Settings**.
+
 The application stores Bible references and reading structure only; it does not
 contain Bible text or depend on a translation.
 

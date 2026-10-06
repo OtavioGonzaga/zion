@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Add installable Progressive Web App support with offline application assets and shortcuts for Today, Plan, and Completed readings.
+- Add a user-controlled application update prompt that protects unsaved plan edits.
+
+### Changed
+
+- Keep the browser theme color aligned with the active Zion theme.
+
 ## [0.3.1] - 2026-10-05
 
 ### Changed

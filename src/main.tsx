@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { App } from "./app/App";
 import { appConfig } from "./config/app";
 import { loadAppState } from "./storage/state";
+import { applyTheme } from "./config/theme";
 import "./styles/global.css";
 
 const rootElement = document.getElementById("root");
@@ -13,13 +14,7 @@ if (!rootElement) {
 
 document.title = appConfig.name;
 const boot = loadAppState();
-const theme = boot.state.preferences.theme;
-document.documentElement.dataset.theme =
-	theme === "system"
-		? window.matchMedia("(prefers-color-scheme: light)").matches
-			? "light"
-			: "dark"
-		: theme;
+applyTheme(boot.state.preferences.theme);
 
 createRoot(rootElement).render(
 	<StrictMode>

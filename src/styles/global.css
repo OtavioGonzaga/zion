@@ -478,7 +478,8 @@ input:focus-visible {
 	padding: 0.65rem 2.75rem 0.65rem 0.65rem;
 }
 .action-notice,
-.action-message {
+.action-message,
+.pwa-notice {
 	position: fixed;
 	z-index: 5;
 	left: 50%;
@@ -494,6 +495,59 @@ input:focus-visible {
 	border-radius: var(--radius-sm);
 	background: var(--color-surface);
 	box-shadow: 0 0.5rem 2rem #0004;
+}
+.pwa-notice {
+	bottom: 5rem;
+	align-items: flex-start;
+	flex-direction: column;
+	width: min(100% - 2rem, 36rem);
+	padding: 0.9rem;
+}
+.pwa-notice-copy,
+.pwa-notice-actions,
+.pwa-offline-notice {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+}
+.pwa-notice-copy {
+	align-items: flex-start;
+}
+.pwa-notice-copy > svg {
+	flex: 0 0 auto;
+	color: var(--color-primary);
+}
+.pwa-notice-copy p {
+	margin: 0.35rem 0 0;
+	color: var(--color-text-muted);
+	line-height: 1.4;
+}
+.pwa-notice-actions {
+	align-self: flex-end;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+}
+.pwa-notice-actions .button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+.pwa-notice-actions .button:disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+}
+.pwa-offline-notice {
+	flex-direction: row;
+	color: var(--color-text);
+}
+.pwa-offline-notice > svg {
+	color: var(--color-success);
+}
+.pwa-offline-notice button {
+	margin-left: auto;
+	border: 0;
+	background: transparent;
+	color: var(--color-text-muted);
 }
 .action-message button {
 	border: 0;
