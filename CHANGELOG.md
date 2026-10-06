@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-06
+
 ### Added
 
 - Add installable Progressive Web App support with offline application assets and shortcuts for Today, Plan, and Completed readings.
